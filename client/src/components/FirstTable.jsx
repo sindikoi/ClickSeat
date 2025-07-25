@@ -1,8 +1,18 @@
 import { useReactTable } from "@tanstack/react-table";
 import React, { useState } from "react";
 import "../style/tables.css";
+import { useNavigate } from 'react-router-dom';
 
 function FirstTable() {
+
+  const navigate = useNavigate();
+
+  const createEvent = () => {
+    navigate('/אירוע')
+  }
+
+
+
   const columns = [
     { header: "מצב האירוע ", accessorKey: "condition" },
     { header: "מספר אורחים", accessorKey: "numberofGuests" },
@@ -54,19 +64,7 @@ function FirstTable() {
     <div>
       <button
         className="addRow"
-        onClick={() =>
-          setData([
-            ...data,
-            {
-              date: "",
-              name: "",
-              kind: "",
-              place: "",
-              numberofGuests: "",
-              condition: "",
-            },
-          ])
-        }
+        onClick={createEvent}
       >
         הוספת אירוע
       </button>
@@ -75,8 +73,8 @@ function FirstTable() {
         <table>
           <thead>
             <tr>
-              {columns.map((column) => (
-                <th> {column.header}</th>
+              {columns.map((column, index) => (
+                <th key ={index}> {column.header}</th>
               ))}
             </tr>
           </thead>
