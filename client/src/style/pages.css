@@ -1,0 +1,28 @@
+.Homepage {
+  background-color: rgb(211, 211, 211);
+  height: 100%;
+  text-align: center;
+
+  flex: 1;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  flex-direction: row;
+  display: flex;
+  height: 150vh;
+  width: 100vw;
+}
