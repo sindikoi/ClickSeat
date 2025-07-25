@@ -49,6 +49,8 @@ function FirstTable() {
   }
 
   return (
+    <div className="box">
+        <p className="title"> האירועים שלך </p>
     <div>
       <button
         className="addRow"
@@ -144,6 +146,7 @@ function FirstTable() {
           </tbody>
         </table>
       </div>
+    </div>
     </div>
   );
 }
