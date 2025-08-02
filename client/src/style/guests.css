@@ -1,0 +1,271 @@
+.guests-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  direction: rtl;
+}
+
+.guests-page h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+}
+
+.guests-page h2 {
+  color: #555;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+/* טופס הוספת אורח */
+.add-guest-form {
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.add-guest-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.add-guest-form input,
+.add-guest-form select,
+.add-guest-form textarea {
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.add-guest-form input:focus,
+.add-guest-form select:focus,
+.add-guest-form textarea:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.add-guest-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.add-guest-form button {
+  background: #007bff;
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+  align-self: flex-start;
+}
+
+.add-guest-form button:hover {
+  background: #0056b3;
+}
+
+/* חיפוש */
+.search-section {
+  margin-bottom: 30px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* רשימת אורחים */
+.guests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.guest-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.guest-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.guest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.guest-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-badge.green {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.red {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status-badge.orange {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.guest-details p {
+  margin: 8px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.guest-details strong {
+  color: #333;
+}
+
+/* רספונסיביות */
+@media (max-width: 768px) {
+  .guests-page {
+    padding: 15px;
+  }
+  
+  .guests-page h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .guests-page h2 {
+    font-size: 1.3rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .add-guest-form {
+    padding: 20px;
+  }
+  
+  .add-guest-form input,
+  .add-guest-form select,
+  .add-guest-form textarea {
+    padding: 12px;
+    font-size: 16px; /* מונע זום באייפון */
+  }
+  
+  .add-guest-form button {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+  }
+  
+  .guests-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .guest-card {
+    padding: 15px;
+  }
+  
+  .guest-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .guest-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .guest-details p {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .guests-page {
+    padding: 10px;
+  }
+  
+  .guests-page h1 {
+    font-size: 1.8rem;
+  }
+  
+  .guests-page h2 {
+    font-size: 1.2rem;
+  }
+  
+  .add-guest-form {
+    padding: 15px;
+  }
+  
+  .add-guest-form input,
+  .add-guest-form select,
+  .add-guest-form textarea {
+    padding: 10px;
+  }
+  
+  .add-guest-form button {
+    padding: 12px;
+  }
+  
+  .guest-card {
+    padding: 12px;
+  }
+  
+  .guest-header h3 {
+    font-size: 1rem;
+  }
+  
+  .guest-details p {
+    font-size: 12px;
+  }
+  
+  .status-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+  }
+} 

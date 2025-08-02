@@ -1,0 +1,692 @@
+.seating-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  direction: rtl;
+}
+
+.seating-page h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+}
+
+.seating-page h2 {
+  color: #555;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.seating-container {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+/* פאנל אורחים */
+.guests-panel {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  height: fit-content;
+}
+
+.guests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.guest-item {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  cursor: grab;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.guest-item:hover {
+  border-color: #007bff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.guest-item.seated {
+  border-color: #28a745;
+  background: #f8fff9;
+  cursor: not-allowed;
+}
+
+.guest-item.seated:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.guest-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.guest-name {
+  font-weight: bold;
+  color: #333;
+}
+
+.guest-group {
+  padding: 2px 8px;
+  border-radius: 12px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.guest-status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.seated-indicator {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #28a745;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.no-guests-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.no-guests-message p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.no-guests-message p:first-child {
+  font-weight: bold;
+  color: #333;
+}
+
+.add-guests-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 15px;
+}
+
+.add-guests-btn:hover {
+  background: #0056b3;
+}
+
+/* מפת האולם */
+.venue-map {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.add-table-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.add-table-btn:hover {
+  background: #218838;
+}
+
+.add-table-form {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 2px solid #e0e0e0;
+}
+
+.add-table-form h3 {
+  margin: 0 0 15px 0;
+  color: #333;
+}
+
+.add-table-form .form-group {
+  margin-bottom: 20px;
+}
+
+.add-table-form .form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+.add-table-form input,
+.add-table-form select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.capacity-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.capacity-type {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  transition: border-color 0.3s;
+}
+
+.capacity-type:hover {
+  border-color: #007bff;
+}
+
+.capacity-type label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  margin: 0;
+}
+
+.capacity-type input[type="radio"] {
+  width: auto;
+  margin: 0;
+}
+
+.capacity-type select,
+.capacity-type input[type="number"] {
+  width: 120px;
+  margin-right: auto;
+}
+
+.add-table-form input:focus,
+.add-table-form select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.save-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.save-btn:hover {
+  background: #0056b3;
+}
+
+.cancel-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.cancel-btn:hover {
+  background: #545b62;
+}
+
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.table-round {
+  border-radius: 50%;
+}
+
+.table-rectangle {
+  border-radius: 8px;
+  width: 140px;
+  height: 100px;
+}
+
+.table-oval {
+  border-radius: 50%;
+  width: 160px;
+  height: 100px;
+}
+
+.table:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.table-header {
+  text-align: center;
+  margin-bottom: 5px;
+  position: relative;
+}
+
+.table-actions {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  display: flex;
+  gap: 5px;
+}
+
+.edit-table-btn,
+.delete-table-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+.edit-table-btn:hover {
+  background: #0056b3;
+}
+
+.delete-table-btn {
+  background: #dc3545;
+}
+
+.delete-table-btn:hover {
+  background: #c82333;
+}
+
+.table-name {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.table-capacity {
+  display: block;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.table-guests {
+  max-height: 60px;
+  overflow-y: auto;
+  text-align: center;
+}
+
+.table-guest {
+  font-size: 10px;
+  margin: 1px 0;
+  padding: 1px 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 3px;
+}
+
+/* סטטיסטיקות */
+.seating-stats {
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.stat-card h3 {
+  margin: 0 0 10px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* רספונסיביות */
+@media (max-width: 1024px) {
+  .seating-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .guests-panel {
+    order: 2;
+  }
+  
+  .venue-map {
+    order: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .seating-page {
+    padding: 10px;
+  }
+  
+  .seating-page h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .seating-page h2 {
+    font-size: 1.3rem;
+  }
+  
+  .seating-container {
+    gap: 20px;
+  }
+  
+  .guests-panel {
+    padding: 15px;
+  }
+  
+  .guests-list {
+    max-height: 300px;
+  }
+  
+  .guest-item {
+    padding: 12px;
+  }
+  
+  .guest-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .stat-card {
+    padding: 15px;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+  
+  .venue-map {
+    padding: 15px;
+  }
+  
+  .map-container {
+    height: 400px;
+  }
+  
+  .table {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .table-rectangle {
+    width: 100px;
+    height: 70px;
+  }
+  
+  .table-oval {
+    width: 120px;
+    height: 70px;
+  }
+  
+  .table-name {
+    font-size: 10px;
+  }
+  
+  .table-capacity {
+    font-size: 8px;
+  }
+  
+  .table-guest {
+    font-size: 8px;
+  }
+  
+  .table-actions {
+    top: -3px;
+    right: -3px;
+    gap: 3px;
+  }
+  
+  .edit-table-btn,
+  .delete-table-btn {
+    width: 16px;
+    height: 16px;
+    font-size: 8px;
+  }
+  
+  .capacity-type {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .capacity-type select,
+  .capacity-type input[type="number"] {
+    width: 100%;
+  }
+  
+  .map-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+  
+  .add-table-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
+  
+  .add-table-form {
+    padding: 15px;
+  }
+  
+  .add-table-form h3 {
+    font-size: 1.2rem;
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .save-btn,
+  .cancel-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .seating-page {
+    padding: 8px;
+  }
+  
+  .seating-page h1 {
+    font-size: 1.8rem;
+  }
+  
+  .seating-page h2 {
+    font-size: 1.2rem;
+  }
+  
+  .guests-panel {
+    padding: 12px;
+  }
+  
+  .guest-item {
+    padding: 10px;
+  }
+  
+  .guest-name {
+    font-size: 14px;
+  }
+  
+  .guest-group {
+    font-size: 10px;
+    padding: 1px 6px;
+  }
+  
+  .guest-status {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .stat-card {
+    padding: 12px;
+  }
+  
+  .stat-number {
+    font-size: 1.3rem;
+  }
+  
+  .venue-map {
+    padding: 12px;
+  }
+  
+  .map-container {
+    height: 350px;
+  }
+  
+  .table {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .table-rectangle {
+    width: 90px;
+    height: 60px;
+  }
+  
+  .table-oval {
+    width: 100px;
+    height: 60px;
+  }
+  
+  .table-name {
+    font-size: 9px;
+  }
+  
+  .table-capacity {
+    font-size: 7px;
+  }
+  
+  .table-guest {
+    font-size: 7px;
+    margin: 0;
+  }
+  
+  .add-table-form {
+    padding: 12px;
+  }
+  
+  .add-table-form h3 {
+    font-size: 1.1rem;
+  }
+  
+  .add-table-form input,
+  .add-table-form select {
+    padding: 10px;
+    font-size: 16px; /* מונע זום באייפון */
+  }
+  
+  .capacity-type {
+    padding: 8px;
+  }
+  
+  .capacity-type label {
+    font-size: 14px;
+  }
+} 
