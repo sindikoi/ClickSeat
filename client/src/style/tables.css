@@ -84,6 +84,79 @@
   position: relative;
 }
 
+/* סגנון לכפתור סטטוס */
+.status-btn {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white !important;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(40, 167, 69, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* עיצוב מיוחד למילה "פעולות" */
+.status-btn {
+  color: #000000 !important;
+  text-shadow: none;
+  font-weight: 700 !important;
+}
+
+.status-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
+  background: linear-gradient(135deg, #218838, #1e7e34);
+}
+
+/* תפריט נפתח לכפתור סטטוס */
+.status-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.status-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  min-width: 150px;
+  animation: slideDown 0.2s ease;
+}
+
+.status-menu-item {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: right;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.status-menu-item:hover {
+  background: #f8f9fa;
+  color: #007bff;
+}
+
+.status-menu-item.danger:hover {
+  background: #fee;
+  color: #dc3545;
+}
+
 .action-btn {
   padding: 6px 12px;
   border: none;

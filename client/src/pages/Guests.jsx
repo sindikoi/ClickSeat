@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../style/guests.css';
+import Slider from '../components/Slider';
+import Sliderup from '../components/Sliderup';
 
 const Guests = () => {
   const [guests, setGuests] = useState([]);
@@ -179,7 +181,10 @@ const Guests = () => {
   ).length;
 
   return (
-    <div className="guests-page">
+    <div className="wrapper">
+      <div className="allPages">
+        <Sliderup />
+        <div className="guests-page">
       <h1>🎉 ניהול אורחים</h1>
       
       {/* כפתורי ניהול נתונים */}
@@ -498,6 +503,9 @@ const Guests = () => {
           </div>
         )}
       </div>
+        </div>
+      </div>
+      <Slider />
     </div>
   );
 };

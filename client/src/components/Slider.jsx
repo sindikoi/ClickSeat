@@ -6,17 +6,15 @@ function Slider({ onMenuClick }) {
 
   const toggleSlider = () => {
     setIsOpen(!isOpen);
-    console.log('Slider toggled, isOpen:', !isOpen);
   };
 
   const handleMenuClick = (menuItem) => {
-    console.log(`נבחר: ${menuItem}`);
     if (onMenuClick) {
       onMenuClick(menuItem);
     }
   };
 
-  console.log('Slider rendered, isOpen:', isOpen);
+  // console.log('Slider rendered, isOpen:', isOpen);
 
   return (
     <>
@@ -67,13 +65,7 @@ function Slider({ onMenuClick }) {
               onClick={() => handleMenuClick('ראשי')}
             >
               🏠 ראשי
-            </button>
-            <button 
-              className="menu-item"
-              onClick={() => handleMenuClick('הגדרות')}
-            >
-              ⚙️ הגדרות
-            </button>
+            </button>        
             <button 
               className="menu-item"
               onClick={() => handleMenuClick('משתמשים')}

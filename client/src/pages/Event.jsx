@@ -27,9 +27,11 @@ function Event() {
     const handleSubmit = (e) => {
       e.preventDefault();
       
+      console.log('יוצר אירוע חדש...');
+      
       // יצירת אירוע חדש עם כל הפרטים
       const newEvent = {
-        date: event.date,
+        date: event.date.split('-').reverse().join('-'), // הפיכת התאריך ל-DD-MM-YYYY
         name: event.name,
         kind: event.kind,
         place: event.place,
@@ -38,14 +40,22 @@ function Event() {
         id: Date.now() // מזהה ייחודי
       };
 
+      console.log('האירוע החדש:', newEvent);
+
       // טעינת אירועים קיימים
       const existingEvents = JSON.parse(localStorage.getItem('clickSeat_events') || '[]');
+      console.log('אירועים קיימים:', existingEvents);
       
       // הוספת האירוע החדש
       const updatedEvents = [...existingEvents, newEvent];
+      console.log('כל האירועים אחרי הוספה:', updatedEvents);
       
       // שמירה בlocalStorage
       localStorage.setItem('clickSeat_events', JSON.stringify(updatedEvents));
+      console.log('האירועים נשמרו ב-localStorage:', updatedEvents);
+      
+      // שליחת אירוע כדי לעדכן את הלוח שנה
+      window.dispatchEvent(new Event('storage'));
       
       alert("נוצר אירוע חדש בהצלחה!");
       navigate("/דף בית");

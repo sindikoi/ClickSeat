@@ -11,30 +11,46 @@ function FirstTable() {
 
   // טעינת אירועים מlocalStorage
   useEffect(() => {
-    const savedEvents = localStorage.getItem('clickSeat_events');
-    if (savedEvents) {
-      try {
-        setData(JSON.parse(savedEvents));
-      } catch (error) {
-        console.error('שגיאה בטעינת אירועים:', error);
+    const loadEvents = () => {
+      const savedEvents = localStorage.getItem('clickSeat_events');
+      
+      if (savedEvents) {
+        try {
+          const eventsData = JSON.parse(savedEvents);
+          setData(eventsData);
+        } catch (error) {
+          console.error('שגיאה בטעינת אירועים:', error);
+        }
       }
-    }
+    };
+
+    loadEvents();
+
+    // האזנה לשינויים ב-localStorage
+    const handleStorageChange = () => {
+      loadEvents();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  // שמירת אירועים לlocalStorage
-  useEffect(() => {
-    localStorage.setItem('clickSeat_events', JSON.stringify(data));
-  }, [data]);
+  // שמירת אירועים לlocalStorage (רק אם יש שינויים ידניים בטבלה)
+  // useEffect(() => {
+  //   if (data.length > 0) {
+  //     localStorage.setItem('clickSeat_events', JSON.stringify(data));
+  //   }
+  // }, [data]);
 
   const createEvent = () => {
     navigate('/אירוע')
   }
 
   const columns = [
-    { header: "מצב האירוע ", accessorKey: "condition" },
+    { header: "מצב האירוע", accessorKey: "condition" },
     { header: "מספר אורחים", accessorKey: "numberofGuests" },
-    { header: "אולם ", accessorKey: "place" },
-    { header: "סוג האירוע ", accessorKey: "kind" },
+    { header: "אולם", accessorKey: "place" },
+    { header: "סוג האירוע", accessorKey: "kind" },
     { header: "שם האירוע", accessorKey: "name" },
     { header: "תאריך", accessorKey: "date" },
   ];
@@ -66,39 +82,40 @@ function FirstTable() {
       const newData = data.filter((_, index) => index !== rowIndex);
       setData(newData);
       setOpen(null);
+      
+      // עדכון localStorage אחרי המחיקה
+      localStorage.setItem('clickSeat_events', JSON.stringify(newData));
+      
+      // שליחת אירוע כדי לעדכן את הלוח שנה
+      window.dispatchEvent(new Event('storage'));
     }
   }
 
   const viewEventDetails = (rowIndex) => {
     const event = data[rowIndex];
-    console.log('פרטי האירוע:', event);
     // כאן אפשר להוסיף ניווט לעמוד פרטי האירוע
     navigate(`/פרטי-אירוע/${rowIndex}`);
   }
 
   const editEvent = (rowIndex) => {
     const event = data[rowIndex];
-    console.log('עריכת האירוע:', event);
     // כאן אפשר להוסיף ניווט לעמוד עריכת האירוע
     navigate(`/עריכת-אירוע/${rowIndex}`);
   }
 
   const viewEventStatus = (rowIndex) => {
     const event = data[rowIndex];
-    console.log('סטטוס האירוע:', event);
     // כאן אפשר להוסיף ניווט לעמוד סטטוס האירוע
     navigate(`/סטטוס-אירוע/${rowIndex}`);
   }
 
   const viewSeatingMap = (rowIndex) => {
     const event = data[rowIndex];
-    console.log('מפת הישיבה:', event);
     navigate('/הושבה');
   }
 
   const viewGuests = (rowIndex) => {
     const event = data[rowIndex];
-    console.log('אורחי האירוע:', event);
     navigate('/אורחים');
   }
 
@@ -115,14 +132,13 @@ function FirstTable() {
 
       <div className="tableFirst">
         <table>
-          <thead>
-            <tr>
-              {columns.map((column, index) => (
-                <th key ={index}> {column.header}</th>
-              ))}
-              <th>פעולות</th>
-            </tr>
-          </thead>
+                     <thead>
+             <tr>
+               {columns.map((column, index) => (
+                 <th key ={index}> {column.header}</th>
+               ))}
+             </tr>
+           </thead>
           <tbody>
             {data.length == 0 ? (
               <tr>
@@ -131,76 +147,58 @@ function FirstTable() {
             ) : (
               data.map((row, rowIndex) => (
                 <tr key={rowIndex}>
-                  {columns.map((column, columnIndex) => (
-                    <td key={columnIndex}>
-                      {isEdit?.rowIndex === rowIndex && isEdit?.columnIndex === columnIndex ? (
-                        <input
-                          value={row[column.accessorKey] || ''}
-                          onChange={(e) => saveEdit(rowIndex, column.accessorKey, e.target.value)}
-                          onBlur={() => setEdit(null)}
-                          autoFocus
-                        />
-                      ) : (
-                        <span onClick={() => editData(rowIndex, columnIndex)}>
-                          {row[column.accessorKey] || ''}
-                        </span>
-                      )}
-                    </td>
-                  ))}
-                  <td>
-                    <div className="action-buttons">
-                      <button 
-                        className="action-btn primary"
-                        onClick={() => viewEventDetails(rowIndex)}
-                        title="פרטי האירוע"
-                      >
-                        👁️ פרטים
-                      </button>
-                      
-                      <button 
-                        className="action-btn secondary"
-                        onClick={() => menuoButtom(rowIndex)}
-                        title="אפשרויות נוספות"
-                      >
-                        ⚙️
-                      </button>
-                      
-                      {isOpen === rowIndex && (
-                        <div className="dropdown-menu">
-                          <button 
-                            className="dropdown-item"
-                            onClick={() => editEvent(rowIndex)}
-                          >
-                            ✏️ עריכת אירוע
-                          </button>
-                          <button 
-                            className="dropdown-item"
-                            onClick={() => viewEventStatus(rowIndex)}
-                          >
-                            📊 סטטוס אירוע
-                          </button>
-                          <button 
-                            className="dropdown-item"
-                            onClick={() => viewGuests(rowIndex)}
-                          >
-                            👥 ניהול אורחים
-                          </button>
-                          <button 
-                            className="dropdown-item"
-                            onClick={() => viewSeatingMap(rowIndex)}
-                          >
-                            🪑 מפת הישיבה
-                          </button>
-                          <button 
-                            className="dropdown-item danger"
-                            onClick={() => deleteRow(rowIndex)}
-                          >
-                            🗑️ מחיקה
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </td>
+                                     {columns.map((column, columnIndex) => (
+                     <td key={columnIndex}>
+                                               {column.accessorKey === "condition" ? (
+                          // כפתור מצב האירוע עם תפריט נפתח
+                          <div className="status-dropdown">
+                            <button 
+                              className="status-btn"
+                              onClick={() => menuoButtom(rowIndex)}
+                              title="אפשרויות האירוע"
+                            >
+                                                             ⚙️ פעולות
+                            </button>
+                            {isOpen === rowIndex && (
+                              <div className="status-menu">
+                                <button 
+                                  className="status-menu-item"
+                                  onClick={() => editEvent(rowIndex)}
+                                >
+                                  ✏️ עריכה
+                                </button>
+                                <button 
+                                  className="status-menu-item"
+                                  onClick={() => viewEventStatus(rowIndex)}
+                                >
+                                  📊 סטטוס
+                                </button>
+                                <button 
+                                  className="status-menu-item danger"
+                                  onClick={() => deleteRow(rowIndex)}
+                                >
+                                  🗑️ מחיקה
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                         // שאר העמודות - עריכה רגילה
+                         isEdit?.rowIndex === rowIndex && isEdit?.columnIndex === columnIndex ? (
+                           <input
+                             value={row[column.accessorKey] || ''}
+                             onChange={(e) => saveEdit(rowIndex, column.accessorKey, e.target.value)}
+                             onBlur={() => setEdit(null)}
+                             autoFocus
+                           />
+                         ) : (
+                           <span onClick={() => editData(rowIndex, columnIndex)}>
+                             {row[column.accessorKey] || ''}
+                           </span>
+                         )
+                       )}
+                     </td>
+                   ))}
                 </tr>
               ))
             )}

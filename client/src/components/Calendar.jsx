@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { HebrewCalendar, Location, HDate } from '@hebcal/core';
 import '../style/calendar.css';
 
 function Calendar({ onMenuClick }) {
@@ -13,22 +14,112 @@ function Calendar({ onMenuClick }) {
     type: 'חתונה'
   });
 
+  // פונקציה לקבלת תאריך עברי (גרסה פשוטה)
+  const getHebrewDate = (gregorianDate) => {
+    try {
+      const hd = new HDate(gregorianDate);
+      const hebrewMonths = [
+        'ניסן', 'אייר', 'סיוון', 'תמוז', 'אב', 'אלול',
+        'תשרי', 'חשוון', 'כסלו', 'טבת', 'שבט', 'אדר'
+      ];
+      const monthName = hebrewMonths[hd.getMonth() - 1];
+      return `${hd.getDate()} ${monthName}`;
+    } catch (e) {
+      return '';
+    }
+  };
+
+  // פונקציה לקבלת אירועים יהודיים לחודש נתון
+  const getJewishEventsForMonth = (year, month) => {
+    try {
+      const startDate = new Date(year, month, 1);
+      const endDate = new Date(year, month + 1, 0);
+      
+      const options = {
+        start: startDate,
+        end: endDate,
+        location: Location.lookup('Jerusalem'),
+        sedrot: true,
+        candlelighting: true,
+        language: 'he'
+      };
+      
+      const events = HebrewCalendar.calendar(options);
+      return events.map(event => ({
+        id: `jewish-${event.basename}-${event.getDate().getTime()}`,
+        title: event.render(),
+        date: event.getDate().toISOString().split('T')[0],
+        type: event.getCategories().includes('holiday') ? 'חג' : 
+              event.getCategories().includes('fast') ? 'צום' : 'אירוע',
+        isJewish: true
+      }));
+    } catch (error) {
+      console.error('שגיאה בטעינת אירועים יהודיים:', error);
+      return [];
+    }
+  };
+
+  // פונקציה לטיפול בלחיצות על תפריט הסליידר
+  const handleSliderMenuClick = (menuItem) => {
+    if (onMenuClick) {
+      onMenuClick(menuItem);
+    }
+  };
+
   // טעינת אירועים מ-localStorage
   useEffect(() => {
-    const savedEvents = localStorage.getItem('clickSeat_calendar_events');
-    if (savedEvents) {
-      try {
-        setEvents(JSON.parse(savedEvents));
-      } catch (error) {
-        console.error('שגיאה בטעינת אירועים:', error);
+    const loadEvents = () => {
+      const savedEvents = localStorage.getItem('clickSeat_events');
+      console.log('טוען אירועים מהלוח שנה:', savedEvents);
+      
+      if (savedEvents) {
+        try {
+          const eventsData = JSON.parse(savedEvents);
+          console.log('אירועים שטענו:', eventsData);
+          
+          // המרת האירועים לפורמט של הלוח שנה
+          const calendarEvents = eventsData.map(event => {
+            // המרת התאריך מ-DD-MM-YYYY ל-YYYY-MM-DD עבור הלוח שנה
+            const dateParts = event.date.split('-');
+            const formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+            
+            const calendarEvent = {
+              id: event.id,
+              title: event.name,
+              description: event.condition || '',
+              time: '',
+              type: event.kind,
+              date: formattedDate,
+              fullDate: new Date(formattedDate).toISOString()
+            };
+            console.log('אירוע לוח שנה:', calendarEvent);
+            return calendarEvent;
+          });
+          console.log('כל אירועי הלוח שנה:', calendarEvents);
+          setEvents(calendarEvents);
+        } catch (error) {
+          console.error('שגיאה בטעינת אירועים:', error);
+        }
+      } else {
+        console.log('אין אירועים ב-localStorage');
       }
-    }
+    };
+
+    loadEvents();
+
+    // האזנה לשינויים ב-localStorage
+    const handleStorageChange = () => {
+      loadEvents();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  // שמירת אירועים ל-localStorage
-  useEffect(() => {
-    localStorage.setItem('clickSeat_calendar_events', JSON.stringify(events));
-  }, [events]);
+  // שמירת אירועים ל-localStorage (לא נדרש כי האירועים נשמרים בעמוד יצירת אירוע)
+  // useEffect(() => {
+  //   localStorage.setItem('clickSeat_calendar_events', JSON.stringify(events));
+  // }, [events]);
 
   const getDaysInMonth = (date) => {
     const year = date.getFullYear();
@@ -91,8 +182,25 @@ function Calendar({ onMenuClick }) {
   };
 
   const getEventsForDate = (day) => {
-    const dateString = new Date(currentDate.getFullYear(), currentDate.getMonth(), day).toISOString().split('T')[0];
-    return events.filter(event => event.date === dateString);
+    // יצירת תאריך בפורמט YYYY-MM-DD
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const dayStr = String(day).padStart(2, '0');
+    const dateString = `${year}-${month}-${dayStr}`;
+    
+    // קבלת אירועים יהודיים לחודש הנוכחי
+    const jewishEvents = getJewishEventsForMonth(year, currentDate.getMonth());
+    
+    // שילוב אירועים רגילים ואירועים יהודיים
+    const allEvents = [...events, ...jewishEvents];
+    
+    console.log('מחפש אירועים לתאריך:', dateString);
+    console.log('כל האירועים:', allEvents);
+    
+    const dayEvents = allEvents.filter(event => event.date === dateString);
+    console.log('אירועים שנמצאו:', dayEvents);
+    
+    return dayEvents;
   };
 
   const { daysInMonth, startingDay } = getDaysInMonth(currentDate);
@@ -108,25 +216,35 @@ function Calendar({ onMenuClick }) {
     const dayEvents = getEventsForDate(day);
     const isToday = new Date().toDateString() === new Date(currentDate.getFullYear(), currentDate.getMonth(), day).toDateString();
     
-    days.push(
-      <div 
-        key={day} 
-        className={`calendar-day ${isToday ? 'today' : ''} ${dayEvents.length > 0 ? 'has-events' : ''}`}
-        onClick={() => handleDateClick(day)}
-      >
-        <span className="day-number">{day}</span>
-        {dayEvents.length > 0 && (
-          <div className="events-indicator">
-            {dayEvents.slice(0, 2).map(event => (
-              <div key={event.id} className="event-dot" title={event.title}></div>
-            ))}
-            {dayEvents.length > 2 && (
-              <div className="more-events">+{dayEvents.length - 2}</div>
-            )}
-          </div>
-        )}
-      </div>
-    );
+         const currentDateObj = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+     const hebrewDate = getHebrewDate(currentDateObj);
+     
+     days.push(
+       <div 
+         key={day} 
+         className={`calendar-day ${isToday ? 'today' : ''} ${dayEvents.length > 0 ? 'has-events' : ''}`}
+         onClick={() => handleDateClick(day)}
+       >
+         <span className="day-number">{day}</span>
+         <span className="hebrew-date">{hebrewDate}</span>
+         {dayEvents.length > 0 && (
+           <div className="events-indicator">
+             {dayEvents.slice(0, 1).map(event => (
+               <div 
+                 key={event.id} 
+                 className={`event-title ${event.isJewish ? 'jewish' : ''} ${event.type === 'חג' ? 'holiday' : ''} ${event.type === 'צום' ? 'fast' : ''}`} 
+                 title={event.title}
+               >
+                 {event.title}
+               </div>
+             ))}
+             {dayEvents.length > 1 && (
+               <div className="more-events">+{dayEvents.length - 1}</div>
+             )}
+           </div>
+         )}
+       </div>
+     );
   }
 
   return (
@@ -211,29 +329,7 @@ function Calendar({ onMenuClick }) {
         </div>
       )}
 
-      {/* רשימת אירועים */}
-      <div className="events-list">
-        <h3>אירועים קרובים</h3>
-        {events
-          .filter(event => new Date(event.fullDate) >= new Date())
-          .sort((a, b) => new Date(a.fullDate) - new Date(b.fullDate))
-          .slice(0, 5)
-          .map(event => (
-            <div key={event.id} className="event-item">
-              <div className="event-info">
-                <h4>{event.title}</h4>
-                <p>{new Date(event.date).toLocaleDateString('he-IL')} {event.time}</p>
-                <span className="event-type">{event.type}</span>
-              </div>
-              <button 
-                className="delete-event-btn"
-                onClick={() => deleteEvent(event.id)}
-              >
-                🗑️
-              </button>
-            </div>
-          ))}
-      </div>
+      
     </div>
   );
 }

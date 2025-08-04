@@ -15,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Homepage/>}/>{/*דף בית*/}
         <Route path="/דף בית" element={<Homepage/>}/>
+        <Route path="/לוח-שנה" element={<Homepage/>}/>
         <Route path="/אירוע" element={<Event/>}/>
         <Route path="/אורחים" element={<Guests/>}/>
         <Route path="/הושבה" element={<Seating/>}/>
