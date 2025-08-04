@@ -1,219 +1,229 @@
-.Homepage {
-  background-color: rgb(211, 211, 211);
-  height: 100%;
-  text-align: center;
-  flex: 1;
-}
+/* ==========================================================================
+   Global Styles & Base Layout
+   ========================================================================== */
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body,
-html {
-  height: 90%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.wrapper {
-  flex-direction: row;
-  display: flex;
-  height: auto; /* Changed from 150vh */
-  min-height: 100vh;
-  width: 100vw;
-}
-
-.allPages {
-  background-color: #d3d3d3;
-  height: 100%;
-  margin: 0;
-  padding: 20px; /* Added padding */
-  min-height: 100vh;
-  width: 100vw;
-  text-align: center;
-}
-
-.title {
-  margin-top: 20px;
-  margin-bottom: 30px;
-  font-size: 1.5rem;
-  color: #333;
-  font-weight: bold;
-}
-
-.event-title {
-  margin-top: 20px;
-  margin-bottom: 30px;
-  font-size: 3rem !important;
-  color: #d20b0b;
-  font-weight: bold;
-}
-
-h2.title {
-  margin-top: 20px;
-  margin-bottom: 30px;
-  font-size: 2.5rem !important;
-  color: #d20b0b;
-  font-weight: bold;
-}
-
-/* Form Styles */
-.event-form-container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.event-form {
-  background-color: white;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 100%; /* Making the form wide */
-  text-align: right;
-}
-
-.form-section {
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.form-section:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-}
-
-.form-section h3 {
-  color: #333;
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.form-group {
-  margin-bottom: 25px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #333;
-  font-size: 16px;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-}
-
-.form-buttons {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-top: 30px;
-}
-
-.submit-btn,
-.home-btn {
-  padding: 12px 25px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.submit-btn {
-  background-color: #007bff;
-  color: white;
-}
-
-.submit-btn:hover {
-  background-color: #0056b3;
-}
-
-.home-btn {
-  background-color: #6c757d;
-  color: white;
-}
-
-.home-btn:hover {
-  background-color: #545b62;
-}
-
-/* Calendar Styles (for consistency) */
-.calendar-view {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.calendar-header-actions {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 20px;
-}
-
-.back-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.back-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .event-form {
-    width: 95%;
-    padding: 20px;
-  }
-  .calendar-view {
-    padding: 10px;
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
   
-  .back-btn {
-    padding: 10px 15px;
-    font-size: 13px;
+  body,
+  html {
+    height: 100%;
+    width: 100%;
   }
-}
-
-@media (max-width: 480px) {
-  .back-btn {
-    padding: 8px 12px;
-    font-size: 12px;
+  
+  .wrapper {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    width: 100vw;
   }
-}
+  
+  .allPages {
+    background-color: #f0f2f5; /* A slightly lighter, more modern background */
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .event-title {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #c92a2a;
+    font-weight: bold;
+  }
+  
+  /* ==========================================================================
+     Event Form - COMPLEX LAYOUT
+     ========================================================================== */
+  
+  .event-form-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .event-form {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    
+    text-align: right;
+  }
+  
+  /* 1. The main grid container for each section */
+  .form-section {
+    display: grid;
+    /* We create 6 columns to have precise control over the layout */
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 20px; /* Spacing between all items */
+  
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .form-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+  
+  /* 2. Section titles must span the full width (all 6 columns) */
+  .form-section h3 {
+    grid-column: 1 / -1; /* This is crucial */
+    color: #343a40;
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 10px; /* Add some space below the title */
+  }
+  
+  /*
+    3. This is the new, important part: 
+    Each .form-group is now a mini-grid to place the label NEXT to the input.
+  */
+  .form-group {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Label gets auto width, input takes the rest */
+    gap: 10px; /* Space between label and input */
+    align-items: center; /* Vertically align them */
+  }
+  
+  /* If you want the label ABOVE the input (like your original design), comment out the grid lines above and uncomment this: */
+  /*
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  */
+  
+  .form-group label {
+    font-weight: 600;
+    color: #495057;
+    white-space: nowrap; /* Prevents long labels from breaking into two lines */
+    text-align: right;
+    font-size: 14px;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+  }
+  
+  /* 
+    4. Helper classes to control how many columns each form-group spans.
+    You will need to add these classes in your JSX code.
+  */
+  
+  /* Example: A field that takes up 2 out of 6 columns */
+  .form-group.span-2 {
+    grid-column: span 2;
+  }
+  
+  /* Example: A field that takes up 3 out of 6 columns */
+  .form-group.span-3 {
+    grid-column: span 3;
+  }
+  
+  /* Example: A field that takes up 4 out of 6 columns */
+  .form-group.span-4 {
+    grid-column: span 4;
+  }
+  
+  /* A field that takes up the full width (all 6 columns) */
+  .form-group.span-6 {
+    grid-column: span 6;
+  }
+  
+  
+  /* Form buttons at the end */
+  .form-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+    grid-column: 1 / -1; /* Make sure buttons are centered in the grid */
+  }
+  
+  .submit-btn,
+  .home-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .submit-btn {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .submit-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .home-btn {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .home-btn:hover {
+    background-color: #545b62;
+  }
+  
+  
+  /* ==========================================================================
+     Responsive Design
+     ========================================================================== */
+  
+  /* For tablets and smaller devices */
+  @media (max-width: 768px) {
+    /* On small screens, we simplify the layout to one column */
+    .form-section {
+      grid-template-columns: 1fr;
+    }
+  
+    /* We also force each group to be a single column */
+    .form-group,
+    .form-group.span-2,
+    .form-group.span-3,
+    .form-group.span-4,
+    .form-group.span-6 {
+      grid-column: 1 / -1;
+    }
+    
+    /* On mobile, it's better to have the label above the input */
+    .form-group {
+      grid-template-columns: 1fr; /* Single column for label and input */
+      gap: 8px;
+    }
+  
+    .form-group label {
+      text-align: right;
+    }
+  
+    .event-form {
+      padding: 20px;
+    }
+  }

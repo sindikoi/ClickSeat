@@ -147,7 +147,7 @@ function Event() {
                   onChange={handlechange}
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group full-width">
                 <label>פרטים נוספים</label>
                 <textarea
                   name="conditions"
