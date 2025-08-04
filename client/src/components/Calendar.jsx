@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../style/calendar.css';
 
-function Calendar() {
+function Calendar({ onMenuClick }) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const [showEventForm, setShowEventForm] = useState(false);

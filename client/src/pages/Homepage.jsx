@@ -25,15 +25,7 @@ function Homepage() {
           <FirstTable/>
         ) : currentView === 'calendar' ? (
           <div className="calendar-view">
-            <div className="calendar-header-actions">
-              <button 
-                className="back-btn"
-                onClick={() => setCurrentView('main')}
-              >
-                ◀ חזור לדף הראשי
-              </button>
-            </div>
-            <Calendar />
+            <Calendar onMenuClick={handleMenuClick} />
           </div>
         ) : null}
       </div>

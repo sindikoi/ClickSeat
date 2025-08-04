@@ -26,7 +26,29 @@ function Event() {
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      alert("נוצר אירוע חדש");
+      
+      // יצירת אירוע חדש עם כל הפרטים
+      const newEvent = {
+        date: event.date,
+        name: event.name,
+        kind: event.kind,
+        place: event.place,
+        numberofGuests: event.numberOfGuests,
+        condition: event.conditions || "פעיל",
+        id: Date.now() // מזהה ייחודי
+      };
+
+      // טעינת אירועים קיימים
+      const existingEvents = JSON.parse(localStorage.getItem('clickSeat_events') || '[]');
+      
+      // הוספת האירוע החדש
+      const updatedEvents = [...existingEvents, newEvent];
+      
+      // שמירה בlocalStorage
+      localStorage.setItem('clickSeat_events', JSON.stringify(updatedEvents));
+      
+      alert("נוצר אירוע חדש בהצלחה!");
+      navigate("/דף בית");
     };
   
 
@@ -39,19 +61,19 @@ function Event() {
           <form onSubmit={handleSubmit} className="event-form">
             <div className="form-group">
               <label>תאריך</label>
-              <input type="date" name="date" value={event.date} onChange={handlechange} />
+              <input type="date" name="date" value={event.date} onChange={handlechange} required />
             </div>
             <div className="form-group">
               <label>שם האירוע </label>
-              <input type="text" name="name" value={event.name} onChange={handlechange} />
+              <input type="text" name="name" value={event.name} onChange={handlechange} required />
             </div>
             <div className="form-group">
               <label>סוג האירוע </label>
-              <input type="text" name="kind" value={event.kind} onChange={handlechange} />
+              <input type="text" name="kind" value={event.kind} onChange={handlechange} required />
             </div>
             <div className="form-group">
               <label>מיקום האירוע </label>
-              <input type="text" name="place" value={event.place} onChange={handlechange} />
+              <input type="text" name="place" value={event.place} onChange={handlechange} required />
             </div>
             <div className="form-group">
               <label>מספר מוזמנים </label>
@@ -60,6 +82,7 @@ function Event() {
                 name="numberOfGuests"
                 value={event.numberOfGuests}
                 onChange={handlechange}
+                required
               />
             </div>
             <div className="form-group">

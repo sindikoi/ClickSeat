@@ -1,5 +1,5 @@
 import { useReactTable } from "@tanstack/react-table";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../style/tables.css";
 import { useNavigate } from 'react-router-dom';
 
@@ -8,6 +8,23 @@ function FirstTable() {
   const [data, setData] = useState([]);
   const [isOpen, setOpen] = useState(null);
   const [isEdit, setEdit] = useState(null);
+
+  // טעינת אירועים מlocalStorage
+  useEffect(() => {
+    const savedEvents = localStorage.getItem('clickSeat_events');
+    if (savedEvents) {
+      try {
+        setData(JSON.parse(savedEvents));
+      } catch (error) {
+        console.error('שגיאה בטעינת אירועים:', error);
+      }
+    }
+  }, []);
+
+  // שמירת אירועים לlocalStorage
+  useEffect(() => {
+    localStorage.setItem('clickSeat_events', JSON.stringify(data));
+  }, [data]);
 
   const createEvent = () => {
     navigate('/אירוע')

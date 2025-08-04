@@ -17,6 +17,41 @@
   transform: translateX(100%);
 }
 
+/* כפתור קבוע לפתיחת הסליידר */
+.slider-toggle-fixed {
+  position: fixed !important;
+  top: 50% !important;
+  right: 0 !important;
+  transform: translateY(-50%) !important;
+  background: linear-gradient(135deg, #667eea, #764ba2) !important;
+  color: white !important;
+  border: none !important;
+  padding: 15px 8px !important;
+  border-top-left-radius: 8px !important;
+  border-bottom-left-radius: 8px !important;
+  cursor: pointer !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3) !important;
+  transition: all 0.3s ease !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 30px !important;
+  height: 60px !important;
+}
+
+.slider-toggle-fixed:hover {
+  background: linear-gradient(135deg, #5a6fd8, #6a4190) !important;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
+  transform: translateY(-50%) translateX(-2px) !important;
+}
+
+.slider-toggle-fixed:active {
+  transform: translateY(-50%) translateX(0) !important;
+}
+
 .slider-header {
   display: flex;
   justify-content: space-between;
@@ -89,6 +124,12 @@
   .slider.closed {
     transform: translateX(100%);
   }
+  
+  .slider-toggle-fixed {
+    width: 25px !important;
+    height: 50px !important;
+    font-size: 14px !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -103,6 +144,12 @@
   .menu-item {
     font-size: 14px;
     padding: 12px 15px;
+  }
+  
+  .slider-toggle-fixed {
+    width: 20px !important;
+    height: 40px !important;
+    font-size: 12px !important;
   }
 }
 
@@ -122,6 +169,15 @@
   }
   to {
     transform: translateX(100%);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
   }
 }
 
