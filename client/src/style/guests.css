@@ -27,6 +27,8 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .guests-page {
@@ -70,6 +72,86 @@ body {
   height: 3px;
   background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
   border-radius: 2px;
+}
+
+/* בחירת אירוע */
+.event-selector {
+  background: var(--card-background);
+  padding: 25px;
+  border-radius: var(--border-radius);
+  margin-bottom: 30px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.event-select {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: #fafafa;
+  color: var(--text-primary);
+  font-family: inherit;
+  margin-bottom: 20px;
+}
+
+.event-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.event-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.stat-item {
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  padding: 15px;
+  border-radius: var(--border-radius-sm);
+  text-align: center;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-item.confirmed {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border-color: var(--success-color);
+}
+
+.stat-item.declined {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border-color: var(--danger-color);
+}
+
+.stat-item.pending {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-color: var(--warning-color);
+}
+
+.stat-number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 /* הודעת הצלחה */
@@ -147,6 +229,7 @@ body {
 .add-guest-form input,
 .add-guest-form select,
 .add-guest-form textarea {
+  width: 100%;
   padding: 15px;
   border: 2px solid var(--border-color);
   border-radius: var(--border-radius-sm);
@@ -155,6 +238,11 @@ body {
   background: #fafafa;
   color: var(--text-primary);
   font-family: inherit;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-align: right !important;
+  direction: rtl !important;
 }
 
 .add-guest-form input:focus,
@@ -170,12 +258,50 @@ body {
 .add-guest-form input::placeholder,
 .add-guest-form textarea::placeholder {
   color: var(--text-secondary);
+  text-align: right !important;
+  direction: rtl !important;
 }
 
 .add-guest-form textarea {
   resize: vertical;
   min-height: 100px;
   font-family: inherit;
+}
+
+/* יישור מיוחד לשדה הטלפון */
+.add-guest-form input[type="tel"] {
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+.add-guest-form input[type="tel"]::placeholder {
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+/* יישור כללי לכל השדות */
+.add-guest-form input,
+.add-guest-form select,
+.add-guest-form textarea {
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+.add-guest-form input::placeholder,
+.add-guest-form textarea::placeholder {
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+/* יישור ספציפי מאוד לשדה הטלפון */
+.add-guest-form .input-group input[type="tel"] {
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+.add-guest-form .input-group input[type="tel"]::placeholder {
+  text-align: right !important;
+  direction: rtl !important;
 }
 
 .add-guest-form button {
@@ -192,6 +318,7 @@ body {
   box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .add-guest-form button::before {
@@ -228,7 +355,7 @@ body {
   background: linear-gradient(135deg, #94a3b8, #64748b);
 }
 
-/* חיפוש */
+/* חיפוש ופילטרים */
 .search-section {
   margin-bottom: 30px;
   background: var(--card-background);
@@ -242,6 +369,7 @@ body {
   position: relative;
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .search-input {
@@ -255,6 +383,9 @@ body {
   background: #fafafa;
   color: var(--text-primary);
   font-family: inherit;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .search-input:focus {
@@ -279,11 +410,43 @@ body {
   padding: 5px;
   border-radius: 50%;
   transition: all 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .clear-search:hover {
   background: #f1f5f9;
   color: var(--danger-color);
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-btn {
+  background: #f1f5f9;
+  border: 2px solid #e2e8f0;
+  padding: 10px 20px;
+  border-radius: var(--border-radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-secondary);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.filter-btn:hover {
+  background: #e2e8f0;
+  transform: translateY(-1px);
+}
+
+.filter-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: var(--shadow-sm);
 }
 
 /* רשימת אורחים */
@@ -380,6 +543,18 @@ body {
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+.event-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  color: #1e40af;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .guest-actions {
@@ -432,6 +607,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .status-btn:hover {
@@ -503,6 +679,7 @@ body {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .delete-btn:hover {
@@ -608,6 +785,30 @@ body {
   .status-buttons {
     justify-content: flex-start;
   }
+  
+  .event-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .filter-buttons {
+    flex-direction: column;
+  }
+  
+  .filter-btn {
+    text-align: center;
+  }
+  
+  .management-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .export-btn,
+  .clear-btn {
+    width: 100%;
+    max-width: 200px;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -683,6 +884,18 @@ body {
   .empty-state p {
     font-size: 1rem;
   }
+  
+  .event-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+  
+  .stat-label {
+    font-size: 11px;
+  }
 }
 
 /* מצב כהה (אופציונלי) */
@@ -698,7 +911,8 @@ body {
   .add-guest-form input,
   .add-guest-form select,
   .add-guest-form textarea,
-  .search-input {
+  .search-input,
+  .event-select {
     background: #334155;
     color: var(--text-primary);
     border-color: #475569;
@@ -707,13 +921,19 @@ body {
   .add-guest-form input:focus,
   .add-guest-form select:focus,
   .add-guest-form textarea:focus,
-  .search-input:focus {
+  .search-input:focus,
+  .event-select:focus {
     background: #475569;
   }
   
   .group-badge {
     background: linear-gradient(135deg, #334155, #475569);
     color: var(--text-primary);
+  }
+  
+  .event-badge {
+    background: linear-gradient(135deg, #1e3a8a, #1d4ed8);
+    color: #93c5fd;
   }
   
   .status-btn {
@@ -723,6 +943,21 @@ body {
   
   .status-btn:hover {
     background: #475569;
+  }
+  
+  .filter-btn {
+    background: #334155;
+    border-color: #475569;
+    color: var(--text-primary);
+  }
+  
+  .filter-btn:hover {
+    background: #475569;
+  }
+  
+  .stat-item {
+    background: linear-gradient(135deg, #334155, #475569);
+    border-color: #475569;
   }
 }
 
@@ -751,13 +986,15 @@ body {
 
 /* אפקט גלישה על כפתורים */
 .status-btn,
-.delete-btn {
+.delete-btn,
+.filter-btn {
   position: relative;
   overflow: hidden;
 }
 
 .status-btn::before,
-.delete-btn::before {
+.delete-btn::before,
+.filter-btn::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -771,7 +1008,8 @@ body {
 }
 
 .status-btn:hover::before,
-.delete-btn:hover::before {
+.delete-btn:hover::before,
+.filter-btn:hover::before {
   width: 100%;
   height: 100%;
 }
@@ -788,4 +1026,115 @@ body {
 
 .add-guest-form button.loading {
   animation: pulse 1.5s infinite;
+}
+
+/* שיפורים למובייל */
+@media (max-width: 480px) {
+  .guest-details p {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .guest-details strong {
+    min-width: auto;
+  }
+  
+  .status-buttons {
+    gap: 3px;
+  }
+  
+  .status-btn {
+    min-width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+  
+  .delete-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+/* מניעת זום באייפון */
+@media screen and (max-width: 480px) {
+  .add-guest-form input,
+  .add-guest-form select,
+  .add-guest-form textarea,
+  .search-input,
+  .event-select {
+    font-size: 16px !important;
+  }
+}
+
+/* אפקטים נוספים */
+.guest-card {
+  will-change: transform;
+}
+
+.guest-card:hover {
+  will-change: auto;
+}
+
+/* שיפור נגישות */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+} 
+
+/* ניהול נתונים */
+.data-management {
+  background: var(--card-background);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.management-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.export-btn,
+.clear-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.export-btn {
+  background: linear-gradient(135deg, var(--success-color), #059669);
+  color: white;
+}
+
+.export-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.clear-btn {
+  background: linear-gradient(135deg, var(--danger-color), #dc2626);
+  color: white;
+}
+
+.clear-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 } 

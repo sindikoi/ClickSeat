@@ -1,0 +1,451 @@
+.calendar-container {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin: 20px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.calendar-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.nav-btn {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.weekday {
+  text-align: center;
+  font-weight: 600;
+  color: #666;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.calendar-day:hover {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.calendar-day.empty {
+  background: #f8f9fa;
+  cursor: default;
+}
+
+.calendar-day.empty:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.calendar-day.today {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-color: #667eea;
+}
+
+.calendar-day.today:hover {
+  background: linear-gradient(135deg, #5a6fd8, #6a4190);
+}
+
+.calendar-day.has-events {
+  border-color: #28a745;
+  background: linear-gradient(135deg, #f8fff9, #e8f5e8);
+}
+
+.day-number {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.events-indicator {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.event-dot {
+  width: 6px;
+  height: 6px;
+  background: #28a745;
+  border-radius: 50%;
+}
+
+.more-events {
+  font-size: 10px;
+  color: #666;
+  font-weight: 600;
+}
+
+/* טופס הוספת אירוע */
+.event-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.event-form {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.event-form h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  text-align: right;
+  direction: rtl;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+  background: #f8f9fa;
+  color: #666;
+  border: 2px solid #e0e0e0;
+}
+
+.btn-secondary:hover {
+  background: #e9ecef;
+  transform: translateY(-2px);
+}
+
+/* רשימת אירועים */
+.events-list {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.events-list h3 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.event-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+.event-item:hover {
+  background: #e9ecef;
+  transform: translateX(-5px);
+}
+
+.event-info h4 {
+  margin: 0 0 5px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.event-info p {
+  margin: 0 0 5px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.event-type {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.delete-event-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.delete-event-btn:hover {
+  background: #fee;
+  color: #dc3545;
+  transform: scale(1.1);
+}
+
+/* רספונסיביות */
+@media (max-width: 768px) {
+  .calendar-container {
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  .calendar-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .nav-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  
+  .weekday {
+    padding: 8px;
+    font-size: 12px;
+  }
+  
+  .calendar-day {
+    padding: 6px;
+  }
+  
+  .day-number {
+    font-size: 12px;
+  }
+  
+  .event-form {
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-weekdays {
+    gap: 2px;
+  }
+  
+  .calendar-grid {
+    gap: 2px;
+  }
+  
+  .weekday {
+    padding: 6px;
+    font-size: 11px;
+  }
+  
+  .calendar-day {
+    padding: 4px;
+  }
+  
+  .day-number {
+    font-size: 11px;
+  }
+  
+  .event-dot {
+    width: 4px;
+    height: 4px;
+  }
+  
+  .more-events {
+    font-size: 8px;
+  }
+}
+
+/* אנימציות */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.calendar-container {
+  animation: fadeIn 0.5s ease;
+}
+
+.event-item {
+  animation: fadeIn 0.3s ease;
+}
+
+/* מצב כהה */
+@media (prefers-color-scheme: dark) {
+  .calendar-container {
+    background: #1e293b;
+    color: #f1f5f9;
+  }
+  
+  .calendar-header h2 {
+    color: #f1f5f9;
+  }
+  
+  .weekday {
+    background: #334155;
+    color: #cbd5e1;
+  }
+  
+  .calendar-day {
+    background: #334155;
+    border-color: #475569;
+    color: #f1f5f9;
+  }
+  
+  .calendar-day:hover {
+    background: #475569;
+  }
+  
+  .calendar-day.empty {
+    background: #1e293b;
+  }
+  
+  .event-form {
+    background: #1e293b;
+    color: #f1f5f9;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: #334155;
+    border-color: #475569;
+    color: #f1f5f9;
+  }
+  
+  .event-item {
+    background: #334155;
+  }
+  
+  .event-item:hover {
+    background: #475569;
+  }
+} 

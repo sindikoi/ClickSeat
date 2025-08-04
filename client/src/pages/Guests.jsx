@@ -15,8 +15,31 @@ const Guests = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
 
   const groups = ['משפחה', 'חברים', 'צד כלה', 'צד חתן', 'עבודה'];
+  
+  // רשימת אירועים לדוגמה - אפשר להוסיף יותר
+  const events = [
+     ];
+
+  // טעינת נתונים מ-localStorage בעת טעינת הקומפוננטה
+  useEffect(() => {
+    const savedGuests = localStorage.getItem('clickSeat_guests');
+    if (savedGuests) {
+      try {
+        setGuests(JSON.parse(savedGuests));
+      } catch (error) {
+        console.error('שגיאה בטעינת נתונים מ-localStorage:', error);
+      }
+    }
+  }, []);
+
+  // שמירת נתונים ל-localStorage בכל פעם שהאורחים משתנים
+  useEffect(() => {
+    localStorage.setItem('clickSeat_guests', JSON.stringify(guests));
+  }, [guests]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -28,7 +51,7 @@ const Guests = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (newGuest.firstName && newGuest.lastName) {
+    if (newGuest.firstName && newGuest.lastName && selectedEvent) {
       setIsSubmitting(true);
       
       // סימולציה של עיכוב קצר לאפקט ויזואלי
@@ -37,6 +60,7 @@ const Guests = () => {
       const guest = {
         ...newGuest,
         id: Date.now(),
+        eventId: selectedEvent,
         rsvpStatus: 'pending',
         createdAt: new Date().toISOString()
       };
@@ -57,6 +81,8 @@ const Guests = () => {
       
       // הסתרת הודעת ההצלחה אחרי 3 שניות
       setTimeout(() => setShowSuccess(false), 3000);
+    } else {
+      alert('אנא מלא את כל השדות הנדרשים ובחר אירוע');
     }
   };
 
@@ -74,12 +100,39 @@ const Guests = () => {
     }
   };
 
-  const filteredGuests = guests.filter(guest =>
-    guest.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    guest.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    guest.phone.includes(searchTerm) ||
-    guest.group.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleClearAllData = () => {
+    if (window.confirm('האם אתה בטוח שברצונך למחוק את כל הנתונים? פעולה זו לא ניתנת לביטול!')) {
+      setGuests([]);
+      localStorage.removeItem('clickSeat_guests');
+      alert('כל הנתונים נמחקו בהצלחה!');
+    }
+  };
+
+  const handleExportData = () => {
+    const dataStr = JSON.stringify(guests, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `clickSeat_guests_${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // פילטור אורחים לפי חיפוש, אירוע וסטטוס
+  const filteredGuests = guests.filter(guest => {
+    const matchesSearch = 
+      guest.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      guest.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      guest.phone.includes(searchTerm) ||
+      guest.group.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesEvent = selectedEvent ? guest.eventId === selectedEvent : true;
+    
+    const matchesStatus = statusFilter === 'all' ? true : guest.rsvpStatus === statusFilter;
+    
+    return matchesSearch && matchesEvent && matchesStatus;
+  });
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -108,9 +161,86 @@ const Guests = () => {
     }
   };
 
+  const getEventName = (eventId) => {
+    const event = events.find(e => e.id === eventId);
+    return event ? event.name : 'אירוע לא ידוע';
+  };
+
+  // סטטיסטיקות
+  const totalGuests = guests.filter(g => selectedEvent ? g.eventId === selectedEvent : true).length;
+  const confirmedGuests = guests.filter(g => 
+    g.rsvpStatus === 'confirmed' && (selectedEvent ? g.eventId === selectedEvent : true)
+  ).length;
+  const declinedGuests = guests.filter(g => 
+    g.rsvpStatus === 'declined' && (selectedEvent ? g.eventId === selectedEvent : true)
+  ).length;
+  const pendingGuests = guests.filter(g => 
+    g.rsvpStatus === 'pending' && (selectedEvent ? g.eventId === selectedEvent : true)
+  ).length;
+
   return (
     <div className="guests-page">
       <h1>🎉 ניהול אורחים</h1>
+      
+      {/* כפתורי ניהול נתונים */}
+      {guests.length > 0 && (
+        <div className="data-management">
+          <div className="management-buttons">
+            <button 
+              className="export-btn"
+              onClick={handleExportData}
+              title="ייצא נתונים לקובץ JSON"
+            >
+              📥 ייצא נתונים
+            </button>
+            <button 
+              className="clear-btn"
+              onClick={handleClearAllData}
+              title="מחק את כל הנתונים"
+            >
+              🗑️ מחק כל הנתונים
+            </button>
+          </div>
+        </div>
+      )}
+      
+      {/* בחירת אירוע */}
+      <div className="event-selector">
+        <h2>📅 בחירת אירוע</h2>
+        <select 
+          value={selectedEvent} 
+          onChange={(e) => setSelectedEvent(e.target.value)}
+          className="event-select"
+        >
+          <option value="">בחר אירוע...</option>
+          {events.map(event => (
+            <option key={event.id} value={event.id}>
+              {event.name}
+            </option>
+          ))}
+        </select>
+        
+        {selectedEvent && (
+          <div className="event-stats">
+            <div className="stat-item">
+              <span className="stat-number">{totalGuests}</span>
+              <span className="stat-label">סה"כ אורחים</span>
+            </div>
+            <div className="stat-item confirmed">
+              <span className="stat-number">{confirmedGuests}</span>
+              <span className="stat-label">אישרו הגעה</span>
+            </div>
+            <div className="stat-item declined">
+              <span className="stat-number">{declinedGuests}</span>
+              <span className="stat-label">לא אישרו</span>
+            </div>
+            <div className="stat-item pending">
+              <span className="stat-number">{pendingGuests}</span>
+              <span className="stat-label">לא הגיבו</span>
+            </div>
+          </div>
+        )}
+      </div>
       
       {/* הודעת הצלחה */}
       {showSuccess && (
@@ -150,22 +280,22 @@ const Guests = () => {
           
           <div className="form-row">
             <div className="input-group">
-              <label>מספר טלפון</label>
-              <input
-                type="tel"
-                name="phone"
-                placeholder="הכנס מספר טלפון"
-                value={newGuest.phone}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="input-group">
               <label>אימייל</label>
               <input
                 type="email"
                 name="email"
                 placeholder="הכנס כתובת אימייל"
                 value={newGuest.email}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="input-group">
+              <label>מספר טלפון</label>
+              <input
+                type="tel"
+                name="phone"
+                placeholder="מספר טלפון הכנס"
+                value={newGuest.phone}
                 onChange={handleInputChange}
               />
             </div>
@@ -187,11 +317,11 @@ const Guests = () => {
               </select>
             </div>
             <div className="input-group">
-              <label>מספר מלווים</label>
+              <label>מספר אנשים</label>
               <input
                 type="number"
                 name="plusOnes"
-                placeholder="מספר מלווים"
+                placeholder="מספר אנשים"
                 value={newGuest.plusOnes}
                 onChange={handleInputChange}
                 min="0"
@@ -212,7 +342,7 @@ const Guests = () => {
           
           <button 
             type="submit" 
-            disabled={isSubmitting}
+            disabled={isSubmitting || !selectedEvent}
             className={isSubmitting ? 'loading' : ''}
           >
             {isSubmitting ? 'מוסיף...' : '➕ הוסף אורח'}
@@ -220,9 +350,9 @@ const Guests = () => {
         </form>
       </div>
 
-      {/* חיפוש אורחים */}
+      {/* חיפוש ופילטרים */}
       <div className="search-section">
-        <h2>🔍 חיפוש אורחים</h2>
+        <h2>🔍 חיפוש ופילטרים</h2>
         <div className="search-container">
           <input
             type="text"
@@ -240,6 +370,33 @@ const Guests = () => {
             </button>
           )}
         </div>
+        
+        <div className="filter-buttons">
+          <button 
+            className={`filter-btn ${statusFilter === 'all' ? 'active' : ''}`}
+            onClick={() => setStatusFilter('all')}
+          >
+            כל האורחים ({totalGuests})
+          </button>
+          <button 
+            className={`filter-btn ${statusFilter === 'confirmed' ? 'active' : ''}`}
+            onClick={() => setStatusFilter('confirmed')}
+          >
+            אישרו הגעה ({confirmedGuests})
+          </button>
+          <button 
+            className={`filter-btn ${statusFilter === 'declined' ? 'active' : ''}`}
+            onClick={() => setStatusFilter('declined')}
+          >
+            לא אישרו ({declinedGuests})
+          </button>
+          <button 
+            className={`filter-btn ${statusFilter === 'pending' ? 'active' : ''}`}
+            onClick={() => setStatusFilter('pending')}
+          >
+            לא הגיבו ({pendingGuests})
+          </button>
+        </div>
       </div>
 
       {/* רשימת אורחים */}
@@ -250,7 +407,7 @@ const Guests = () => {
           <div className="empty-state">
             <div className="empty-icon">👥</div>
             <h3>אין אורחים להצגה</h3>
-            <p>{searchTerm ? 'לא נמצאו אורחים התואמים לחיפוש שלך' : 'הוסף את האורח הראשון שלך!'}</p>
+            <p>{searchTerm || statusFilter !== 'all' ? 'לא נמצאו אורחים התואמים לפילטרים שלך' : 'הוסף את האורח הראשון שלך!'}</p>
           </div>
         ) : (
           <div className="guests-grid">
@@ -261,6 +418,9 @@ const Guests = () => {
                     <h3>{guest.firstName} {guest.lastName}</h3>
                     <span className="group-badge">
                       {getGroupIcon(guest.group)} {guest.group}
+                    </span>
+                    <span className="event-badge">
+                      📅 {getEventName(guest.eventId)}
                     </span>
                   </div>
                   <div className="guest-actions">
@@ -309,8 +469,8 @@ const Guests = () => {
                     </p>
                   )}
                   <p>
-                    <strong>👥 מלווים:</strong> 
-                    {guest.plusOnes > 0 ? `${guest.plusOnes} אנשים` : 'ללא מלווים'}
+                    <strong>👥 מספר אנשים:</strong> 
+                    {guest.plusOnes > 0 ? `${guest.plusOnes} אנשים` : 'אדם אחד'}
                   </p>
                   {guest.notes && (
                     <p>

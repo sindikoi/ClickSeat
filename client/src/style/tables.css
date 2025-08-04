@@ -75,6 +75,98 @@
     box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3) !important;
 }
 
+/* כפתורי פעולה */
+.action-buttons {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+}
+
+.action-btn.primary:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+}
+
+.action-btn.secondary {
+  background: linear-gradient(135deg, #6c757d, #545b62);
+  color: white;
+}
+
+.action-btn.secondary:hover {
+  background: linear-gradient(135deg, #545b62, #3d4449);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+}
+
+/* תפריט נפתח */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  min-width: 180px;
+  animation: slideDown 0.2s ease;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: right;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.dropdown-item:hover {
+  background: #f8f9fa;
+  color: #007bff;
+}
+
+.dropdown-item.danger:hover {
+  background: #fee;
+  color: #dc3545;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .menu-dropdown {
   position: absolute;
   background: white;
@@ -133,6 +225,44 @@
     font-size: 1.8rem !important;
     margin-bottom: 15px !important;
     text-align: center !important;
+}
+
+/* רספונסיביות */
+@media (max-width: 768px) {
+  .action-buttons {
+    flex-direction: column;
+    gap: 3px;
+  }
+  
+  .action-btn {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+  
+  .dropdown-menu {
+    min-width: 150px;
+  }
+  
+  .dropdown-item {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tableFirst th, .tableFirst td {
+    padding: 10px 8px !important;
+    font-size: 12px !important;
+  }
+  
+  .action-btn {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+  
+  .dropdown-menu {
+    min-width: 120px;
+  }
 }
 
 

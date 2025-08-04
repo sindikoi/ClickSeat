@@ -1,40 +1,134 @@
 .slider {
-  width: 200px; /* חשוב כדי שהעמודה תהיה ברוחב קבוע */
-  height: 100%; /* שיתפוס את כל גובה המסך */
-  background-color: #222;
+  width: 250px;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   display: flex;
   flex-direction: column;
+  position: fixed;
+  right: 0;
+  top: 0;
+  transition: transform 0.3s ease;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.slider.closed {
+  transform: translateX(100%);
+}
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: flex-start;
-  padding-top: 20px;
+  padding: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
 }
 
 .headline {
   font-weight: bold;
+  font-size: 1.2rem;
+  margin: 0;
 }
 
-.slider-contetnt {
+.toggle-btn {
+  background: rgba(255,255,255,0.2);
+  border: none;
   color: white;
-  size: 18;
-  padding-top: 60%;
-  gap: 100px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+  background: rgba(255,255,255,0.3);
+  transform: scale(1.05);
+}
+
+.slider-content {
+  flex: 1;
+  display: flex;
   flex-direction: column;
+  padding: 20px 0;
+  gap: 10px;
+}
+
+.menu-item {
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 15px 20px;
+  text-align: right;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 0;
+  margin: 0 10px;
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
-.sliderup {
-  width: 100%;
-  height: 60px;
-  background-color: white;
-  flex: 1;
+.menu-item:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateX(-5px);
 }
 
-.header {
-  padding-bottom: 50%;
-  font-weight: bold;
-  font-size: 2em;
+.menu-item:active {
+  background: rgba(255,255,255,0.2);
+}
 
-  color: black;
+/* רספונסיביות */
+@media (max-width: 768px) {
+  .slider {
+    width: 200px;
+  }
+  
+  .slider.closed {
+    transform: translateX(100%);
+  }
+}
+
+@media (max-width: 480px) {
+  .slider {
+    width: 180px;
+  }
+  
+  .headline {
+    font-size: 1rem;
+  }
+  
+  .menu-item {
+    font-size: 14px;
+    padding: 12px 15px;
+  }
+}
+
+/* אנימציות */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.slider.open {
+  animation: slideIn 0.3s ease;
+}
+
+.slider.closed {
+  animation: slideOut 0.3s ease;
 }
