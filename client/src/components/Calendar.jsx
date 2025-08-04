@@ -177,6 +177,38 @@ function Calendar({ onMenuClick }) {
   };
 
   const handleEditEvent = (event) => {
+    // טעינת נתוני האירוע מהלוח שנה
+    const savedEvents = JSON.parse(localStorage.getItem('clickSeat_events') || '[]');
+    const savedEvent = savedEvents.find(e => e.id === event.id);
+    
+    if (savedEvent) {
+      setNewEvent({
+        title: savedEvent.name || event.title,
+        description: savedEvent.condition || event.description,
+        time: savedEvent.time || event.time,
+        type: savedEvent.kind || event.type,
+        place: savedEvent.place || '',
+        numberOfGuests: savedEvent.numberOfGuests || '',
+        seatingLimit: savedEvent.seatingLimit || '',
+        ownerName: savedEvent.ownerName || '',
+        ownerPhone: savedEvent.ownerPhone || '',
+        ownerEmail: savedEvent.ownerEmail || ''
+      });
+    } else {
+      setNewEvent({
+        title: event.title,
+        description: event.description,
+        time: event.time,
+        type: event.type,
+        place: '',
+        numberOfGuests: '',
+        seatingLimit: '',
+        ownerName: '',
+        ownerPhone: '',
+        ownerEmail: ''
+      });
+    }
+    
     setEditingEvent(event);
     setShowEventMenu(null);
   };
@@ -356,14 +388,14 @@ function Calendar({ onMenuClick }) {
          <span className="hebrew-date">{hebrewDate}</span>
          {dayEvents.length > 0 && (
            <div className="events-indicator">
-             {dayEvents.slice(0, 1).map(event => (
+             {dayEvents.slice(0, 2).map(event => (
                <div key={event.id} className="event-container">
                  <div 
                    className={`event-title ${event.isJewish ? 'jewish' : ''} ${event.type === 'חג' ? 'holiday' : ''} ${event.type === 'צום' ? 'fast' : ''} ${!event.isJewish ? 'clickable' : ''}`} 
                    title={event.title}
                    onClick={(e) => handleEventClick(event, e)}
                  >
-                   {event.title}
+                   {event.title.length > 8 ? event.title.substring(0, 8) + '...' : event.title}
                  </div>
                  {showEventMenu === event.id && !event.isJewish && (
                    <div className="event-menu">
@@ -380,14 +412,28 @@ function Calendar({ onMenuClick }) {
                  )}
                </div>
              ))}
-             {dayEvents.length > 1 && (
-               <div className="more-events">+{dayEvents.length - 1}</div>
+             {dayEvents.length > 2 && (
+               <div className="more-events">+{dayEvents.length - 2}</div>
              )}
            </div>
          )}
        </div>
      );
   }
+
+  // סגירת התפריט כשלוחצים מחוץ לו
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showEventMenu && !event.target.closest('.event-container')) {
+        setShowEventMenu(null);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [showEventMenu]);
 
   return (
     <div className="calendar-container">

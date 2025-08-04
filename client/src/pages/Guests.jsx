@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../style/guests.css';
 import Slider from '../components/Slider';
 import Sliderup from '../components/Sliderup';
 
 const Guests = () => {
+  const navigate = useNavigate();
   const [guests, setGuests] = useState([]);
   const [newGuest, setNewGuest] = useState({
     firstName: '',
@@ -185,7 +187,12 @@ const Guests = () => {
       <div className="allPages">
         <Sliderup />
         <div className="guests-page">
-      <h1>🎉 ניהול אורחים</h1>
+          <div className="page-header">
+            <button className="back-btn" onClick={() => navigate(-1)}>
+              ◀ חזור לדף הקודם
+            </button>
+            <h1>🎉 ניהול אורחים</h1>
+          </div>
       
       {/* כפתורי ניהול נתונים */}
       {guests.length > 0 && (

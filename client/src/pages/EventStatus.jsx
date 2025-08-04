@@ -77,12 +77,12 @@ function EventStatus() {
       <div className="allPages">
         <Sliderup />
         <div className="event-status-page">
-          <div className="status-header">
-            <button className="back-btn" onClick={() => navigate(-1)}>
-              ◀ חזור
-            </button>
-            <h1>סטטוס אירוע - {event.name}</h1>
-          </div>
+                     <div className="status-header">
+             <button className="back-btn" onClick={() => navigate(-1)}>
+               ◀ חזור לדף הקודם
+             </button>
+             <h1>סטטוס אירוע - {event.name}</h1>
+           </div>
 
           <div className="status-grid">
             {/* פרטי האירוע */}

@@ -159,7 +159,7 @@ function Event() {
             </div>
             <div className="form-buttons">
               <button type="submit" className="submit-btn">יצירת אירוע</button>
-              <button type="button" onClick={() => navigate("/דף בית")} className="home-btn">דף בית</button>
+              <button type="button" onClick={() => navigate(-1)} className="home-btn">חזור לדף הקודם</button>
             </div>
           </form>
         </div>
