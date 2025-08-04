@@ -1,169 +1,536 @@
+/* משתנים לצבעים */
+:root {
+  --primary-color: #6366f1;
+  --primary-hover: #4f46e5;
+  --secondary-color: #f59e0b;
+  --success-color: #10b981;
+  --danger-color: #ef4444;
+  --warning-color: #f59e0b;
+  --background-color: #f8fafc;
+  --card-background: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --border-radius: 12px;
+  --border-radius-sm: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
 .guests-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   direction: rtl;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-attachment: fixed;
 }
 
 .guests-page h1 {
   text-align: center;
-  color: #333;
+  color: white;
   margin-bottom: 30px;
   font-size: 2.5rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  background: linear-gradient(45deg, #fff, #f0f0f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .guests-page h2 {
-  color: #555;
+  color: var(--text-primary);
   margin-bottom: 20px;
   font-size: 1.5rem;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.guests-page h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  border-radius: 2px;
+}
+
+/* הודעת הצלחה */
+.success-message {
+  background: linear-gradient(135deg, var(--success-color), #059669);
+  color: white;
+  padding: 15px 25px;
+  border-radius: var(--border-radius-sm);
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+  animation: slideInDown 0.5s ease;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* טופס הוספת אורח */
 .add-guest-form {
-  background: #f8f9fa;
-  padding: 25px;
-  border-radius: 10px;
+  background: var(--card-background);
+  padding: 30px;
+  border-radius: var(--border-radius);
   margin-bottom: 30px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.add-guest-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
 }
 
 .add-guest-form form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 }
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 15px;
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 14px;
+  margin-bottom: 4px;
 }
 
 .add-guest-form input,
 .add-guest-form select,
 .add-guest-form textarea {
-  padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  padding: 15px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
   font-size: 16px;
-  transition: border-color 0.3s;
+  transition: all 0.3s ease;
+  background: #fafafa;
+  color: var(--text-primary);
+  font-family: inherit;
 }
 
 .add-guest-form input:focus,
 .add-guest-form select:focus,
 .add-guest-form textarea:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: var(--primary-color);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  transform: translateY(-1px);
+}
+
+.add-guest-form input::placeholder,
+.add-guest-form textarea::placeholder {
+  color: var(--text-secondary);
 }
 
 .add-guest-form textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 100px;
+  font-family: inherit;
 }
 
 .add-guest-form button {
-  background: #007bff;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
   color: white;
-  padding: 12px 30px;
+  padding: 15px 40px;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius-sm);
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
   align-self: flex-start;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.add-guest-form button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.add-guest-form button:hover::before {
+  left: 100%;
 }
 
 .add-guest-form button:hover {
-  background: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.add-guest-form button:active {
+  transform: translateY(0);
+}
+
+.add-guest-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.add-guest-form button.loading {
+  background: linear-gradient(135deg, #94a3b8, #64748b);
 }
 
 /* חיפוש */
 .search-section {
   margin-bottom: 30px;
+  background: var(--card-background);
+  padding: 25px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .search-input {
   width: 100%;
-  padding: 15px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  padding: 18px;
+  padding-left: 50px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
   font-size: 16px;
-  transition: border-color 0.3s;
+  transition: all 0.3s ease;
+  background: #fafafa;
+  color: var(--text-primary);
+  font-family: inherit;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: var(--primary-color);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.search-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.clear-search {
+  position: absolute;
+  left: 15px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.clear-search:hover {
+  background: #f1f5f9;
+  color: var(--danger-color);
 }
 
 /* רשימת אורחים */
+.guests-list {
+  background: var(--card-background);
+  padding: 25px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
 .guests-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
 }
 
 .guest-card {
   background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 25px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.guest-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
 }
 
 .guest-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-color);
 }
 
 .guest-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f1f5f9;
+  gap: 15px;
 }
 
-.guest-header h3 {
-  margin: 0;
-  color: #333;
-  font-size: 1.2rem;
+.guest-name-group {
+  flex: 1;
 }
 
-.status-badge {
+.guest-name-group h3 {
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.group-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+  color: var(--text-secondary);
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 500;
+}
+
+.guest-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.status-badge {
+  padding: 6px 16px;
+  border-radius: 25px;
+  font-size: 12px;
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-sm);
 }
 
 .status-badge.green {
-  background: #d4edda;
-  color: #155724;
+  background: linear-gradient(135deg, var(--success-color), #059669);
+  color: white;
 }
 
 .status-badge.red {
-  background: #f8d7da;
-  color: #721c24;
+  background: linear-gradient(135deg, var(--danger-color), #dc2626);
+  color: white;
 }
 
 .status-badge.orange {
-  background: #fff3cd;
-  color: #856404;
+  background: linear-gradient(135deg, var(--warning-color), #d97706);
+  color: white;
+}
+
+.status-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.status-btn {
+  background: #f1f5f9;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  min-width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-btn:hover {
+  background: #e2e8f0;
+  transform: scale(1.1);
+}
+
+.status-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.guest-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .guest-details p {
-  margin: 8px 0;
-  color: #666;
+  margin: 0;
+  color: var(--text-secondary);
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.5;
 }
 
 .guest-details strong {
-  color: #333;
+  color: var(--text-primary);
+  font-weight: 600;
+  min-width: 60px;
 }
+
+.guest-details a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  word-break: break-all;
+}
+
+.guest-details a:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+.guest-date {
+  font-size: 12px !important;
+  opacity: 0.8;
+}
+
+.guest-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 15px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.delete-btn {
+  background: linear-gradient(135deg, var(--danger-color), #dc2626);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--border-radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* אנימציות */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.guest-card {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.guest-card:nth-child(1) { animation-delay: 0.1s; }
+.guest-card:nth-child(2) { animation-delay: 0.2s; }
+.guest-card:nth-child(3) { animation-delay: 0.3s; }
+.guest-card:nth-child(4) { animation-delay: 0.4s; }
+.guest-card:nth-child(5) { animation-delay: 0.5s; }
 
 /* רספונסיביות */
 @media (max-width: 768px) {
@@ -173,7 +540,7 @@
   
   .guests-page h1 {
     font-size: 2rem;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   }
   
   .guests-page h2 {
@@ -182,46 +549,64 @@
   
   .form-row {
     grid-template-columns: 1fr;
+    gap: 15px;
   }
   
   .add-guest-form {
-    padding: 20px;
+    padding: 25px;
   }
   
   .add-guest-form input,
   .add-guest-form select,
   .add-guest-form textarea {
-    padding: 12px;
-    font-size: 16px; /* מונע זום באייפון */
+    padding: 15px;
+    font-size: 16px;
   }
   
   .add-guest-form button {
     width: 100%;
-    padding: 15px;
+    padding: 18px;
     font-size: 16px;
   }
   
   .guests-grid {
     grid-template-columns: 1fr;
-    gap: 15px;
+    gap: 20px;
   }
   
   .guest-card {
-    padding: 15px;
+    padding: 20px;
   }
   
   .guest-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 12px;
   }
   
-  .guest-header h3 {
-    font-size: 1.1rem;
+  .guest-name-group h3 {
+    font-size: 1.2rem;
   }
   
   .guest-details p {
     font-size: 13px;
+  }
+  
+  .search-section {
+    padding: 20px;
+  }
+  
+  .guests-list {
+    padding: 20px;
+  }
+  
+  .guest-actions {
+    align-items: flex-start;
+    width: 100%;
+  }
+  
+  .status-buttons {
+    justify-content: flex-start;
   }
 }
 
@@ -239,25 +624,25 @@
   }
   
   .add-guest-form {
-    padding: 15px;
+    padding: 20px;
   }
   
   .add-guest-form input,
   .add-guest-form select,
   .add-guest-form textarea {
-    padding: 10px;
+    padding: 12px;
   }
   
   .add-guest-form button {
-    padding: 12px;
+    padding: 15px;
   }
   
   .guest-card {
-    padding: 12px;
+    padding: 18px;
   }
   
-  .guest-header h3 {
-    font-size: 1rem;
+  .guest-name-group h3 {
+    font-size: 1.1rem;
   }
   
   .guest-details p {
@@ -266,6 +651,141 @@
   
   .status-badge {
     font-size: 10px;
-    padding: 2px 8px;
+    padding: 4px 12px;
   }
+  
+  .search-section {
+    padding: 18px;
+  }
+  
+  .guests-list {
+    padding: 18px;
+  }
+  
+  .status-btn {
+    min-width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+  
+  .empty-state {
+    padding: 40px 15px;
+  }
+  
+  .empty-icon {
+    font-size: 3rem;
+  }
+  
+  .empty-state h3 {
+    font-size: 1.3rem;
+  }
+  
+  .empty-state p {
+    font-size: 1rem;
+  }
+}
+
+/* מצב כהה (אופציונלי) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #0f172a;
+    --card-background: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --border-color: #334155;
+  }
+  
+  .add-guest-form input,
+  .add-guest-form select,
+  .add-guest-form textarea,
+  .search-input {
+    background: #334155;
+    color: var(--text-primary);
+    border-color: #475569;
+  }
+  
+  .add-guest-form input:focus,
+  .add-guest-form select:focus,
+  .add-guest-form textarea:focus,
+  .search-input:focus {
+    background: #475569;
+  }
+  
+  .group-badge {
+    background: linear-gradient(135deg, #334155, #475569);
+    color: var(--text-primary);
+  }
+  
+  .status-btn {
+    background: #334155;
+    border-color: #475569;
+  }
+  
+  .status-btn:hover {
+    background: #475569;
+  }
+}
+
+/* שיפורים נוספים */
+.guest-card {
+  position: relative;
+}
+
+.guest-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(245, 158, 11, 0.05));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: var(--border-radius);
+}
+
+.guest-card:hover::after {
+  opacity: 1;
+}
+
+/* אפקט גלישה על כפתורים */
+.status-btn,
+.delete-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.status-btn::before,
+.delete-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.status-btn:hover::before,
+.delete-btn:hover::before {
+  width: 100%;
+  height: 100%;
+}
+
+/* אפקט טעינה */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.add-guest-form button.loading {
+  animation: pulse 1.5s infinite;
 } 
