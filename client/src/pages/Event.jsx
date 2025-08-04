@@ -1,23 +1,23 @@
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import "../style/pages.css"
-import Slider from "../components/Slider";
-import Sliderup from "../components/Sliderup";
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import '../style/pages.css';
+import Slider from '../components/Slider';
+import Sliderup from '../components/Sliderup';
 
 function Event() {
   const navigate = useNavigate();
 
   const [event, setEvent] = useState({
-    date: "",
-    name: "",
-    kind: "",
-    place: "",
-    numberOfGuests: "",
-    seatingLimit: "",
-    ownerName: "",
-    ownerPhone: "",
-    ownerEmail: "",
-    conditions: "",
+    date: '',
+    name: '',
+    kind: '',
+    place: '',
+    numberOfGuests: '',
+    seatingLimit: '',
+    ownerName: '',
+    ownerPhone: '',
+    ownerEmail: '',
+    conditions: '',
   });
 
   const handlechange = (e) => {
@@ -25,50 +25,51 @@ function Event() {
     setEvent((prev) => ({
       ...prev,
       [name]: value,
-    }))
-};
+    }));
+  };
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      
-      console.log('יוצר אירוע חדש...');
-      
-      // יצירת אירוע חדש עם כל הפרטים
-      const newEvent = {
-        date: event.date.split('-').reverse().join('-'), // הפיכת התאריך ל-DD-MM-YYYY
-        name: event.name,
-        kind: event.kind,
-        place: event.place,
-        numberofGuests: event.numberOfGuests,
-        seatingLimit: event.seatingLimit,
-        ownerName: event.ownerName,
-        ownerPhone: event.ownerPhone,
-        ownerEmail: event.ownerEmail,
-        condition: event.conditions || "פעיל",
-        id: Date.now() // מזהה ייחודי
-      };
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-      console.log('האירוע החדש:', newEvent);
+    console.log('יוצר אירוע חדש...');
 
-      // טעינת אירועים קיימים
-      const existingEvents = JSON.parse(localStorage.getItem('clickSeat_events') || '[]');
-      console.log('אירועים קיימים:', existingEvents);
-      
-      // הוספת האירוע החדש
-      const updatedEvents = [...existingEvents, newEvent];
-      console.log('כל האירועים אחרי הוספה:', updatedEvents);
-      
-      // שמירה בlocalStorage
-      localStorage.setItem('clickSeat_events', JSON.stringify(updatedEvents));
-      console.log('האירועים נשמרו ב-localStorage:', updatedEvents);
-      
-      // שליחת אירוע כדי לעדכן את הלוח שנה
-      window.dispatchEvent(new Event('storage'));
-      
-      alert("נוצר אירוע חדש בהצלחה!");
-      navigate("/דף בית");
+    // יצירת אירוע חדש עם כל הפרטים
+    const newEvent = {
+      date: event.date.split('-').reverse().join('-'), // הפיכת התאריך ל-DD-MM-YYYY
+      name: event.name,
+      kind: event.kind,
+      place: event.place,
+      numberofGuests: event.numberOfGuests,
+      seatingLimit: event.seatingLimit,
+      ownerName: event.ownerName,
+      ownerPhone: event.ownerPhone,
+      ownerEmail: event.ownerEmail,
+      condition: event.conditions || 'פעיל',
+      id: Date.now(), // מזהה ייחודי
     };
-  
+
+    console.log('האירוע החדש:', newEvent);
+
+    // טעינת אירועים קיימים
+    const existingEvents = JSON.parse(
+      localStorage.getItem('clickSeat_events') || '[]'
+    );
+    console.log('אירועים קיימים:', existingEvents);
+
+    // הוספת האירוע החדש
+    const updatedEvents = [...existingEvents, newEvent];
+    console.log('כל האירועים אחרי הוספה:', updatedEvents);
+
+    // שמירה בlocalStorage
+    localStorage.setItem('clickSeat_events', JSON.stringify(updatedEvents));
+    console.log('האירועים נשמרו ב-localStorage:', updatedEvents);
+
+    // שליחת אירוע כדי לעדכן את הלוח שנה
+    window.dispatchEvent(new Event('storage'));
+
+    alert('נוצר אירוע חדש בהצלחה!');
+    navigate('/דף בית');
+  };
 
   return (
     <div className="wrapper">
@@ -80,30 +81,61 @@ function Event() {
             {/* פרטי בעל האירוע */}
             <div className="form-section">
               <h3>פרטי בעל האירוע</h3>
-              <div className="form-group">
+              <div className="form-group span-2">
                 <label>*שם בעל האירוע (שם מלא)</label>
-                <input type="text" name="ownerName" value={event.ownerName} onChange={handlechange} required />
+                <input
+                  type="text"
+                  name="ownerName"
+                  value={event.ownerName}
+                  onChange={handlechange}
+                  required
+                />
               </div>
-              <div className="form-group">
+
+              <div className="form-group span-2">
                 <label>*פלאפון (נייד)</label>
-                <input type="tel" name="ownerPhone" value={event.ownerPhone} onChange={handlechange} required />
+                <input
+                  type="tel"
+                  name="ownerPhone"
+                  value={event.ownerPhone}
+                  onChange={handlechange}
+                  required
+                />
               </div>
-              <div className="form-group">
+
+              <div className="form-group span-2">
                 <label>*אימייל</label>
-                <input type="email" name="ownerEmail" value={event.ownerEmail} onChange={handlechange} required />
+                <input
+                  type="email"
+                  name="ownerEmail"
+                  value={event.ownerEmail}
+                  onChange={handlechange}
+                  required
+                />
               </div>
             </div>
 
             {/* פרטי האירוע */}
             <div className="form-section">
               <h3>פרטי האירוע</h3>
-              <div className="form-group">
+              <div className="form-group span-3">
                 <label>*שם האירוע</label>
-                <input type="text" name="name" value={event.name} onChange={handlechange} required />
+                <input
+                  type="text"
+                  name="name"
+                  value={event.name}
+                  onChange={handlechange}
+                  required
+                />
               </div>
-              <div className="form-group">
+              <div className="form-group span-3">
                 <label>סוג אירוע</label>
-                <select name="kind" value={event.kind} onChange={handlechange} required>
+                <select
+                  name="kind"
+                  value={event.kind}
+                  onChange={handlechange}
+                  required
+                >
                   <option value="">בחר</option>
                   <option value="חתונה">חתונה</option>
                   <option value="בר מצווה">בר מצווה</option>
@@ -113,9 +145,14 @@ function Event() {
                   <option value="אחר">אחר</option>
                 </select>
               </div>
-              <div className="form-group">
+              <div className="form-group span-3">
                 <label>אולם</label>
-                <select name="place" value={event.place} onChange={handlechange} required>
+                <select
+                  name="place"
+                  value={event.place}
+                  onChange={handlechange}
+                  required
+                >
                   <option value="">בחר</option>
                   <option value="אולם ראשי">אולם ראשי</option>
                   <option value="אולם משני">אולם משני</option>
@@ -124,11 +161,17 @@ function Event() {
                   <option value="אחר">אחר</option>
                 </select>
               </div>
-              <div className="form-group">
+              <div className="form-group span-3">
                 <label>*תאריך האירוע</label>
-                <input type="datetime-local" name="date" value={event.date} onChange={handlechange} required />
+                <input
+                  type="datetime-local"
+                  name="date"
+                  value={event.date}
+                  onChange={handlechange}
+                  required
+                />
               </div>
-              <div className="form-group">
+              <div className="form-group span-3">
                 <label>*מספר אורחים</label>
                 <input
                   type="number"
@@ -138,7 +181,7 @@ function Event() {
                   required
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group span-3">
                 <label>הגבלת כמות אורחים להושבה</label>
                 <input
                   type="number"
@@ -147,7 +190,7 @@ function Event() {
                   onChange={handlechange}
                 />
               </div>
-              <div className="form-group full-width">
+              <div className="form-group span-6">
                 <label>פרטים נוספים</label>
                 <textarea
                   name="conditions"
@@ -158,8 +201,16 @@ function Event() {
               </div>
             </div>
             <div className="form-buttons">
-              <button type="submit" className="submit-btn">יצירת אירוע</button>
-              <button type="button" onClick={() => navigate(-1)} className="home-btn">חזור לדף הקודם</button>
+              <button type="submit" className="submit-btn">
+                יצירת אירוע
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="home-btn"
+              >
+                חזור לדף הקודם
+              </button>
             </div>
           </form>
         </div>

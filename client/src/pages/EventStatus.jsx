@@ -13,12 +13,16 @@ function EventStatus() {
   // טעינת האירוע לפי ID
   useEffect(() => {
     console.log('מחפש אירוע עם ID:', eventId);
-    const savedEvents = JSON.parse(localStorage.getItem('clickSeat_events') || '[]');
+    const savedEvents = JSON.parse(
+      localStorage.getItem('clickSeat_events') || '[]'
+    );
     console.log('כל האירועים ב-localStorage:', savedEvents);
-    
-    const foundEvent = savedEvents.find(e => e.id == eventId || e.id === parseInt(eventId));
+
+    const foundEvent = savedEvents.find(
+      (e) => e.id == eventId || e.id === parseInt(eventId)
+    );
     console.log('האירוע שנמצא:', foundEvent);
-    
+
     if (foundEvent) {
       setEvent({
         ...foundEvent,
@@ -34,7 +38,7 @@ function EventStatus() {
         contactEmail: foundEvent.ownerEmail || 'לא צוין',
         venueAddress: foundEvent.venueAddress || foundEvent.place || 'לא צוין',
         venuePhone: foundEvent.venuePhone || 'לא צוין',
-        notes: foundEvent.condition || 'אירוע חדש'
+        notes: foundEvent.condition || 'אירוע חדש',
       });
     }
     setLoading(false);
@@ -43,26 +47,34 @@ function EventStatus() {
   const [guests, setGuests] = useState([]);
 
   const getStatusColor = (status) => {
-    switch(status) {
-      case 'confirmed': return '#28a745';
-      case 'declined': return '#dc3545';
-      case 'pending': return '#ffc107';
-      default: return '#6c757d';
+    switch (status) {
+      case 'confirmed':
+        return '#28a745';
+      case 'declined':
+        return '#dc3545';
+      case 'pending':
+        return '#ffc107';
+      default:
+        return '#6c757d';
     }
   };
 
   const getStatusText = (status) => {
-    switch(status) {
-      case 'confirmed': return 'מאשר';
-      case 'declined': return 'לא מאשר';
-      case 'pending': return 'ממתין';
-      default: return 'לא ידוע';
+    switch (status) {
+      case 'confirmed':
+        return 'מאשר';
+      case 'declined':
+        return 'לא מאשר';
+      case 'pending':
+        return 'ממתין';
+      default:
+        return 'לא ידוע';
     }
   };
 
-  const confirmedCount = guests.filter(g => g.status === 'confirmed').length;
-  const declinedCount = guests.filter(g => g.status === 'declined').length;
-  const pendingCount = guests.filter(g => g.status === 'pending').length;
+  const confirmedCount = guests.filter((g) => g.status === 'confirmed').length;
+  const declinedCount = guests.filter((g) => g.status === 'declined').length;
+  const pendingCount = guests.filter((g) => g.status === 'pending').length;
 
   if (loading) {
     return <div>טוען...</div>;
@@ -77,12 +89,12 @@ function EventStatus() {
       <div className="allPages">
         <Sliderup />
         <div className="event-status-page">
-                     <div className="status-header">
-             <button className="back-btn" onClick={() => navigate(-1)}>
-               ◀ חזור לדף הקודם
-             </button>
-             <h1>סטטוס אירוע - {event.name}</h1>
-           </div>
+          <div className="status-header">
+            <button className="back-btn" onClick={() => navigate(-1)}>
+              ◀ חזור לדף הקודם
+            </button>
+            <h1>סטטוס אירוע - {event.name}</h1>
+          </div>
 
           <div className="status-grid">
             {/* פרטי האירוע */}
@@ -95,7 +107,9 @@ function EventStatus() {
                 </div>
                 <div className="detail-item">
                   <strong>תאריך:</strong>
-                  <span>{new Date(event.date).toLocaleDateString('he-IL')}</span>
+                  <span>
+                    {new Date(event.date).toLocaleDateString('he-IL')}
+                  </span>
                 </div>
                 <div className="detail-item">
                   <strong>שעה:</strong>
@@ -130,7 +144,9 @@ function EventStatus() {
                 </div>
                 <div className="detail-item">
                   <strong>אימייל:</strong>
-                  <a href={`mailto:${event.contactEmail}`}>{event.contactEmail}</a>
+                  <a href={`mailto:${event.contactEmail}`}>
+                    {event.contactEmail}
+                  </a>
                 </div>
               </div>
             </div>
@@ -182,52 +198,57 @@ function EventStatus() {
           <div className="guests-section">
             <div className="section-header">
               <h2>👥 רשימת אורחים</h2>
-              <button className="add-guest-btn" onClick={() => navigate('/אורחים')}>
+              <button
+                className="add-guest-btn"
+                onClick={() => navigate('/אורחים')}
+              >
                 ➕ הוסף אורח
               </button>
             </div>
-            
-                         <div className="guests-table">
-               {guests.length > 0 ? (
-                 <table>
-                   <thead>
-                     <tr>
-                       <th>שם</th>
-                       <th>סטטוס</th>
-                       <th>טלפון</th>
-                       <th>מספר אורחים</th>
-                       <th>פעולות</th>
-                     </tr>
-                   </thead>
-                   <tbody>
-                     {guests.map(guest => (
-                       <tr key={guest.id}>
-                         <td>{guest.name}</td>
-                         <td>
-                           <span 
-                             className="status-badge"
-                             style={{ backgroundColor: getStatusColor(guest.status) }}
-                           >
-                             {getStatusText(guest.status)}
-                           </span>
-                         </td>
-                         <td>{guest.phone}</td>
-                         <td>{guest.guests}</td>
-                         <td>
-                           <button className="action-btn">✏️</button>
-                           <button className="action-btn danger">🗑️</button>
-                         </td>
-                       </tr>
-                     ))}
-                   </tbody>
-                 </table>
-               ) : (
-                 <div className="no-guests">
-                   <p>אין אורחים רשומים עדיין</p>
-                   <p>לחץ על "הוסף אורח" כדי להתחיל</p>
-                 </div>
-               )}
-             </div>
+
+            <div className="guests-table">
+              {guests.length > 0 ? (
+                <table>
+                  <thead>
+                    <tr>
+                      <th>שם</th>
+                      <th>סטטוס</th>
+                      <th>טלפון</th>
+                      <th>מספר אורחים</th>
+                      <th>פעולות</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {guests.map((guest) => (
+                      <tr key={guest.id}>
+                        <td>{guest.name}</td>
+                        <td>
+                          <span
+                            className="status-badge"
+                            style={{
+                              backgroundColor: getStatusColor(guest.status),
+                            }}
+                          >
+                            {getStatusText(guest.status)}
+                          </span>
+                        </td>
+                        <td>{guest.phone}</td>
+                        <td>{guest.guests}</td>
+                        <td>
+                          <button className="action-btn">✏️</button>
+                          <button className="action-btn danger">🗑️</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="no-guests">
+                  <p>אין אורחים רשומים עדיין</p>
+                  <p>לחץ על "הוסף אורח" כדי להתחיל</p>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* כפתורי פעולה */}
@@ -235,10 +256,16 @@ function EventStatus() {
             <button className="btn-primary" onClick={() => navigate('/אורחים')}>
               👥 ניהול אורחים
             </button>
-            <button className="btn-secondary" onClick={() => navigate('/הושבה')}>
+            <button
+              className="btn-secondary"
+              onClick={() => navigate('/הושבה')}
+            >
               🪑 מפת הישיבה
             </button>
-            <button className="btn-edit" onClick={() => navigate(`/עריכת-אירוע/${eventId}`)}>
+            <button
+              className="btn-edit"
+              onClick={() => navigate(`/עריכת-אירוע/${eventId}`)}
+            >
               ✏️ עריכת אירוע
             </button>
           </div>
@@ -249,4 +276,4 @@ function EventStatus() {
   );
 }
 
-export default EventStatus; 
+export default EventStatus;

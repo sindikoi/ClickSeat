@@ -1,5 +1,5 @@
-import "../style/slider.css";
-import { useState } from "react";
+import '../style/slider.css';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Slider() {
@@ -26,8 +26,8 @@ function Slider() {
     <>
       {/* כפתור קבוע לפתיחת הסליידר */}
       {!isOpen && (
-        <button 
-          className="slider-toggle-fixed" 
+        <button
+          className="slider-toggle-fixed"
           onClick={toggleSlider}
           style={{
             position: 'fixed',
@@ -49,13 +49,13 @@ function Slider() {
             alignItems: 'center',
             justifyContent: 'center',
             width: '30px',
-            height: '60px'
+            height: '60px',
           }}
         >
           ▶
         </button>
       )}
-      
+
       <div className={`slider ${isOpen ? 'open' : 'closed'}`}>
         <div className="slider-header">
           <p className="headline">ClickSeat</p>
@@ -63,28 +63,28 @@ function Slider() {
             ◀
           </button>
         </div>
-        
+
         {isOpen && (
           <div className="slider-content">
-            <button 
+            <button
               className="menu-item"
               onClick={() => handleMenuClick('ראשי')}
             >
               🏠 ראשי
-            </button>        
-            <button 
+            </button>
+            <button
               className="menu-item"
               onClick={() => handleMenuClick('משתמשים')}
             >
               👥 משתמשים
             </button>
-            <button 
+            <button
               className="menu-item"
               onClick={() => handleMenuClick('הודעות')}
             >
               📧 הודעות
             </button>
-            <button 
+            <button
               className="menu-item"
               onClick={() => handleMenuClick('לוח אירועים')}
             >

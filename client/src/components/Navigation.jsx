@@ -15,7 +15,7 @@ const Navigation = () => {
         <div className="nav-logo">
           <Link to="/">ClickSeat</Link>
         </div>
-        
+
         <ul className="nav-links">
           <li className={isActive('/') || isActive('/דף בית') ? 'active' : ''}>
             <Link to="/דף בית">דף בית</Link>
@@ -38,4 +38,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation; 
+export default Navigation;

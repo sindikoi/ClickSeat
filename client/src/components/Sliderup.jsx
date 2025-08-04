@@ -1,9 +1,9 @@
-import "../style/slider.css";
+import '../style/slider.css';
 
 function Sliderup() {
   return (
     <div className="sliderup">
-      <p className="header">  </p>
+      <p className="header"> </p>
     </div>
   );
 }

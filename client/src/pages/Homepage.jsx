@@ -1,13 +1,13 @@
-import "../style/pages.css";
-import Slider from "../components/Slider";
-import Sliderup from "../components/Sliderup";
-import FirstTable from "../components/FirstTable";
-import "../style/tables.css";
+import '../style/pages.css';
+import Slider from '../components/Slider';
+import Sliderup from '../components/Sliderup';
+import FirstTable from '../components/FirstTable';
+import '../style/tables.css';
 
 function Homepage() {
   return (
     <div className="wrapper">
-      <div className="Homepage">
+      <div className="allPages">
         <Sliderup />
         <FirstTable />
       </div>

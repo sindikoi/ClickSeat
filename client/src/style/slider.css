@@ -9,7 +9,7 @@
   right: 0;
   top: 0;
   transition: transform 0.3s ease;
-  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
 }
 
@@ -57,7 +57,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .headline {
@@ -67,7 +67,7 @@
 }
 
 .toggle-btn {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
   border: none;
   color: white;
   padding: 8px 12px;
@@ -78,7 +78,7 @@
 }
 
 .toggle-btn:hover {
-  background: rgba(255,255,255,0.3);
+  background: rgba(255, 255, 255, 0.3);
   transform: scale(1.05);
 }
 
@@ -107,12 +107,12 @@
 }
 
 .menu-item:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   transform: translateX(-5px);
 }
 
 .menu-item:active {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* רספונסיביות */
@@ -120,11 +120,11 @@
   .slider {
     width: 200px;
   }
-  
+
   .slider.closed {
     transform: translateX(100%);
   }
-  
+
   .slider-toggle-fixed {
     width: 25px !important;
     height: 50px !important;
@@ -136,16 +136,16 @@
   .slider {
     width: 180px;
   }
-  
+
   .headline {
     font-size: 1rem;
   }
-  
+
   .menu-item {
     font-size: 14px;
     padding: 12px 15px;
   }
-  
+
   .slider-toggle-fixed {
     width: 20px !important;
     height: 40px !important;
@@ -173,7 +173,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {

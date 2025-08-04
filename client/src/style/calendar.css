@@ -79,7 +79,9 @@
   padding: 10px 2px 2px 2px;
   margin: 2px;
   box-shadow: none;
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   overflow: hidden; /* למנוע גלישה של תוכן */
 }
 
@@ -129,7 +131,9 @@
   direction: rtl;
   letter-spacing: 0.5px;
   background: none;
-  text-shadow: 0 1px 0 #fff, 0 0 2px #fff;
+  text-shadow:
+    0 1px 0 #fff,
+    0 0 2px #fff;
 }
 
 .events-indicator {

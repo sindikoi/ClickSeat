@@ -1,14 +1,14 @@
 .box {
-  background-color: white !important;
-  border-radius: 15px !important;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
-  padding: 10px 20px !important;
-  width: 90% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  margin: 10px auto !important;
-  border: 3px solid #007bff !important;
-  outline: none !important;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  padding: 10px 20px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  margin: 10px auto;
+  border: 3px solid #007bff;
+  outline: none;
 }
 
 .table-header {
@@ -28,51 +28,54 @@
 }
 
 .tableFirst table {
-  width: 100% !important;
-  border-collapse: collapse !important;
-  border-color: black !important;
-  margin: 0 !important;
-  background-color: white !important;
-  border: 3px solid #333 !important;
+  width: 100%;
+  border-collapse: collapse;
+  border-color: black;
+  margin: 0;
+  background-color: white;
+  border: 3px solid #333;
 }
 
-.tableFirst th, .tableFirst td {
-  border: 2px solid #333 !important;
-  padding: 15px 12px !important;
-  text-align: center !important;
-  font-size: 14px !important;
+.tableFirst th,
+.tableFirst td {
+  border: 2px solid #333;
+  padding: 15px 12px;
+  text-align: center;
+  font-size: 14px;
 }
 
 /* Remove any extra spacing */
-.tableFirst th:first-child, .tableFirst td:first-child {
+.tableFirst th:first-child,
+.tableFirst td:first-child {
   border-left: none; /* Remove left border */
 }
 
-.tableFirst th:last-child, .tableFirst td:last-child {
+.tableFirst th:last-child,
+.tableFirst td:last-child {
   border-right: none; /* Remove right border */
 }
 
-.addRow{
-    background-color: white !important;
-    color: black !important;
-    font-weight: bold !important;
-    font-size: 14px !important;
-    padding: 10px 30px !important;
-    border: 3px solid #007bff !important;
-    border-radius: 8px !important;
-    cursor: pointer !important;
-    margin-bottom: 15px !important;
-    align-self: flex-start !important;
-    margin-right: 100% !important;
-    margin-top: 20px !important;
-    transition: all 0.3s ease !important;
+.addRow {
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 10px 30px;
+  border: 3px solid #007bff;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  align-self: flex-start;
+  margin-right: 100%;
+  margin-top: 20px;
+  transition: all 0.3s ease;
 }
 
 .addRow:hover {
-    background-color: #007bff !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3) !important;
+  background-color: #007bff;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
 }
 
 /* כפתורי פעולה */
@@ -87,7 +90,7 @@
 /* סגנון לכפתור סטטוס */
 .status-btn {
   background: linear-gradient(135deg, #28a745, #20c997);
-  color: white !important;
+  color: white;
   border: none;
   padding: 10px 16px;
   border-radius: 6px;
@@ -103,9 +106,9 @@
 
 /* עיצוב מיוחד למילה "פעולות" */
 .status-btn {
-  color: #000000 !important;
+  color: #000000;
   text-shadow: none;
-  font-weight: 700 !important;
+  font-weight: 700;
 }
 
 .status-btn:hover {
@@ -128,7 +131,7 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 8px 0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   min-width: 150px;
   animation: slideDown 0.2s ease;
@@ -200,7 +203,7 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 8px 0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   min-width: 180px;
   animation: slideDown 0.2s ease;
@@ -246,7 +249,7 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
 }
 
@@ -272,7 +275,7 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   min-width: 120px;
 }
@@ -292,12 +295,12 @@
   background: #f5f5f5;
 }
 
-.title{
-    color: black !important;
-    font-weight: bold !important;
-    font-size: 1.8rem !important;
-    margin-bottom: 15px !important;
-    text-align: center !important;
+.title {
+  color: black;
+  font-weight: bold;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 /* רספונסיביות */
@@ -306,16 +309,16 @@
     flex-direction: column;
     gap: 3px;
   }
-  
+
   .action-btn {
     font-size: 11px;
     padding: 4px 8px;
   }
-  
+
   .dropdown-menu {
     min-width: 150px;
   }
-  
+
   .dropdown-item {
     font-size: 13px;
     padding: 8px 12px;
@@ -323,19 +326,18 @@
 }
 
 @media (max-width: 480px) {
-  .tableFirst th, .tableFirst td {
-    padding: 10px 8px !important;
-    font-size: 12px !important;
+  .tableFirst th,
+  .tableFirst td {
+    padding: 10px 8px;
+    font-size: 12px;
   }
-  
+
   .action-btn {
     font-size: 10px;
     padding: 3px 6px;
   }
-  
+
   .dropdown-menu {
     min-width: 120px;
   }
 }
-
-

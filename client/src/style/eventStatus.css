@@ -48,7 +48,7 @@
   background: white;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   border: 1px solid #e0e0e0;
 }
 
@@ -111,7 +111,7 @@
 
 .stat-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .stat-item.confirmed {
@@ -151,7 +151,7 @@
   background: white;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   margin-bottom: 30px;
 }
 
@@ -201,7 +201,7 @@
   background: white;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .guests-table th {
@@ -314,47 +314,47 @@
   .event-status-page {
     padding: 15px;
   }
-  
+
   .status-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 15px;
   }
-  
+
   .status-header h1 {
     font-size: 1.5rem;
   }
-  
+
   .status-grid {
     grid-template-columns: 1fr;
     gap: 15px;
   }
-  
+
   .stats-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .section-header {
     flex-direction: column;
     gap: 15px;
     align-items: flex-start;
   }
-  
+
   .action-buttons {
     flex-direction: column;
   }
-  
+
   .btn-primary,
   .btn-secondary,
   .btn-edit {
     width: 100%;
     justify-content: center;
   }
-  
+
   .guests-table {
     font-size: 0.9rem;
   }
-  
+
   .guests-table th,
   .guests-table td {
     padding: 8px;
@@ -367,33 +367,33 @@
     background: #1e293b;
     color: #f1f5f9;
   }
-  
+
   .status-card,
   .guests-section {
     background: #334155;
     color: #f1f5f9;
   }
-  
+
   .status-header h1,
   .status-card h2,
   .section-header h2 {
     color: #f1f5f9;
   }
-  
+
   .detail-item strong {
     color: #cbd5e1;
   }
-  
+
   .detail-item span,
   .detail-item a {
     color: #f1f5f9;
   }
-  
+
   .guests-table th {
     background: #475569;
     color: #f1f5f9;
   }
-  
+
   .guests-table tr:hover {
     background: #475569;
   }
@@ -416,4 +416,4 @@
 .no-guests p:first-child {
   font-weight: 600;
   color: #333;
-} 
+}

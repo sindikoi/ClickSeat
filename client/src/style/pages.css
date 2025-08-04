@@ -2,228 +2,178 @@
    Global Styles & Base Layout
    ========================================================================== */
 
-   * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body,
-  html {
-    height: 100%;
-    width: 100%;
-  }
-  
-  .wrapper {
-    display: flex;
-    flex-direction: row;
-    min-height: 100vh;
-    width: 100vw;
-  }
-  
-  .allPages {
-    background-color: #f0f2f5; /* A slightly lighter, more modern background */
-    width: 100%;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .event-title {
-    margin-top: 20px;
-    margin-bottom: 30px;
-    font-size: 2.5rem;
-    color: #c92a2a;
-    font-weight: bold;
-  }
-  
-  /* ==========================================================================
-     Event Form - COMPLEX LAYOUT
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Arial', sans-serif;
+}
+
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.allPages, .Homepage {
+  background-color: #f0f2f5;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.event-title {
+  margin-bottom: 20px;
+  font-size: 2.2rem;
+  color: #c92a2a;
+  font-weight: bold;
+  text-align: center;
+}
+/* ==========================================================================
+     Event Form & General Content Containers
      ========================================================================== */
-  
-  .event-form-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-  
-  .event-form {
-    background-color: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    width: 100%;
-    
-    text-align: right;
-  }
-  
-  /* 1. The main grid container for each section */
-  .form-section {
-    display: grid;
-    /* We create 6 columns to have precise control over the layout */
-    grid-template-columns: repeat(6, 1fr); 
-    gap: 20px; /* Spacing between all items */
-  
-    margin-bottom: 30px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid #dee2e6;
-  }
-  
-  .form-section:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-  }
-  
-  /* 2. Section titles must span the full width (all 6 columns) */
-  .form-section h3 {
-    grid-column: 1 / -1; /* This is crucial */
+
+.event-form-container, .box {
+  width: 100%;
+  max-width: 1200px;
+  background-color: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.event-form {
+  text-align: right;
+  width: 100%;
+}
+
+/* 1. The main grid container for each section */
+.form-section {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 25px; 
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.form-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.form-section h3 {
+    grid-column: 1 / -1;
     color: #343a40;
     font-size: 1.3rem;
     font-weight: 600;
     padding-bottom: 15px;
     border-bottom: 1px solid #dee2e6;
-    margin-bottom: 10px; /* Add some space below the title */
-  }
-  
-  /*
-    3. This is the new, important part: 
-    Each .form-group is now a mini-grid to place the label NEXT to the input.
-  */
-  .form-group {
-    display: grid;
-    grid-template-columns: auto 1fr; /* Label gets auto width, input takes the rest */
-    gap: 10px; /* Space between label and input */
-    align-items: center; /* Vertically align them */
-  }
-  
-  /* If you want the label ABOVE the input (like your original design), comment out the grid lines above and uncomment this: */
-  /*
-  .form-group {
+    margin-bottom: 10px;
+}
+
+
+/* Form Group and Labels */
+.form-group {
     display: flex;
     flex-direction: column;
-  }
-  */
-  
-  .form-group label {
-    font-weight: 600;
-    color: #495057;
-    white-space: nowrap; /* Prevents long labels from breaking into two lines */
-    text-align: right;
-    font-size: 14px;
-  }
-  
-  .form-group input,
-  .form-group textarea,
-  .form-group select {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    font-size: 14px;
-  }
-  
-  .form-group input:focus,
-  .form-group textarea:focus,
-  .form-group select:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
-  }
-  
-  /* 
-    4. Helper classes to control how many columns each form-group spans.
-    You will need to add these classes in your JSX code.
-  */
-  
-  /* Example: A field that takes up 2 out of 6 columns */
-  .form-group.span-2 {
-    grid-column: span 2;
-  }
-  
-  /* Example: A field that takes up 3 out of 6 columns */
-  .form-group.span-3 {
-    grid-column: span 3;
-  }
-  
-  /* Example: A field that takes up 4 out of 6 columns */
-  .form-group.span-4 {
-    grid-column: span 4;
-  }
-  
-  /* A field that takes up the full width (all 6 columns) */
-  .form-group.span-6 {
-    grid-column: span 6;
-  }
-  
-  
-  /* Form buttons at the end */
-  .form-buttons {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 30px;
-    grid-column: 1 / -1; /* Make sure buttons are centered in the grid */
-  }
-  
-  .submit-btn,
-  .home-btn {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-  }
-  
-  .submit-btn {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .submit-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .home-btn {
-    background-color: #6c757d;
-    color: white;
-  }
-  
-  .home-btn:hover {
-    background-color: #545b62;
-  }
-  
-  
-  /* ==========================================================================
+    gap: 8px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #495057;
+  text-align: right;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+/* Grid span helpers */
+.form-group.span-2 { grid-column: span 2; }
+.form-group.span-3 { grid-column: span 3; }
+.form-group.span-4 { grid-column: span 4; }
+.form-group.span-6 { grid-column: span 6; }
+
+
+/* Form buttons at the end */
+.form-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+  grid-column: 1 / -1;
+}
+
+.submit-btn,
+.home-btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.submit-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.home-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.home-btn:hover {
+  background-color: #545b62;
+}
+
+/* ==========================================================================
      Responsive Design
      ========================================================================== */
-  
-  /* For tablets and smaller devices */
-  @media (max-width: 768px) {
-    /* On small screens, we simplify the layout to one column */
-    .form-section {
-      grid-template-columns: 1fr;
-    }
-  
-    /* We also force each group to be a single column */
-    .form-group,
-    .form-group.span-2,
-    .form-group.span-3,
-    .form-group.span-4,
-    .form-group.span-6 {
-      grid-column: 1 / -1;
-    }
-    
-    /* On mobile, it's better to have the label above the input */
-    .form-group {
-      grid-template-columns: 1fr; /* Single column for label and input */
-      gap: 8px;
-    }
-  
-    .form-group label {
-      text-align: right;
-    }
-  
-    .event-form {
-      padding: 20px;
-    }
+
+@media (max-width: 768px) {
+  .form-section {
+    grid-template-columns: 1fr;
   }
+
+  .form-group.span-2,
+  .form-group.span-3,
+  .form-group.span-4,
+  .form-group.span-6 {
+    grid-column: 1 / -1;
+  }
+
+  .event-form-container, .box {
+    padding: 20px;
+  }
+}
