@@ -4,10 +4,12 @@ import Homepage from "./pages/Homepage";
 import Event from "./pages/Event";
 import Guests from "./pages/Guests";
 import Seating from "./pages/Seating";
+import EventStatus from "./pages/EventStatus";
 import Navigation from "./components/Navigation";
 import { BrowserRouter, Routes, Route }  from "react-router-dom";
 
 function App() {
+  console.log('App component rendered');
   return (
     <BrowserRouter>
     <div>
@@ -19,6 +21,7 @@ function App() {
         <Route path="/אירוע" element={<Event/>}/>
         <Route path="/אורחים" element={<Guests/>}/>
         <Route path="/הושבה" element={<Seating/>}/>
+        <Route path="/סטטוס-אירוע/:eventId" element={<EventStatus/>}/>
       </Routes>
     </div>
     </BrowserRouter>

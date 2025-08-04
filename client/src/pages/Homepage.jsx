@@ -14,9 +14,12 @@ function Homepage() {
 
   // בדיקת ה-URL בעת טעינת הדף
   useEffect(() => {
+    console.log('URL השתנה:', location.pathname);
     if (location.pathname === '/לוח-שנה') {
+      console.log('מעביר ללוח שנה');
       setCurrentView('calendar');
     } else {
+      console.log('מעביר לדף ראשי');
       setCurrentView('main');
     }
   }, [location.pathname]);
@@ -24,10 +27,10 @@ function Homepage() {
   const handleMenuClick = (menuItem) => {
     if (menuItem === 'לוח אירועים') {
       setCurrentView('calendar');
-      navigate('/לוח-שנה');
+      navigate('/לוח-שנה', { replace: true });
     } else if (menuItem === 'ראשי') {
       setCurrentView('main');
-      navigate('/דף בית');
+      navigate('/דף בית', { replace: true });
     }
   };
 

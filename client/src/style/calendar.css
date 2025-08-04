@@ -157,6 +157,61 @@
   max-width: 80px;
 }
 
+.event-title.clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #28a745;
+  border: 1px solid #1e7e34;
+}
+
+.event-title.clickable:hover {
+  background: #218838;
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.event-container {
+  position: relative;
+  display: inline-block;
+}
+
+.event-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  min-width: 120px;
+  padding: 8px 0;
+}
+
+.event-menu button {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  text-align: right;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.event-menu button:hover {
+  background-color: #f8f9fa;
+}
+
+.event-menu button:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+.event-menu button:last-child {
+  border-radius: 0 0 8px 8px;
+}
+
 .event-title.jewish {
   background: #ff6b35;
   color: white;

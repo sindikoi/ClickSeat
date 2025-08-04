@@ -18,7 +18,7 @@ const Navigation = () => {
         
         <ul className="nav-links">
           <li className={isActive('/') || isActive('/דף בית') ? 'active' : ''}>
-            <Link to="/">דף בית</Link>
+            <Link to="/דף בית">דף בית</Link>
           </li>
           <li className={isActive('/אורחים') ? 'active' : ''}>
             <Link to="/אורחים">ניהול אורחים</Link>

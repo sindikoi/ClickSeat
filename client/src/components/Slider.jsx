@@ -9,9 +9,12 @@ function Slider({ onMenuClick }) {
   };
 
   const handleMenuClick = (menuItem) => {
+    console.log('לחיצה על תפריט:', menuItem);
     if (onMenuClick) {
       onMenuClick(menuItem);
     }
+    // סגירת הסליידר אחרי לחיצה
+    setIsOpen(false);
   };
 
   // console.log('Slider rendered, isOpen:', isOpen);

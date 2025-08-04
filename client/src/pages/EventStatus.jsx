@@ -12,34 +12,35 @@ function EventStatus() {
 
   // טעינת האירוע לפי ID
   useEffect(() => {
+    console.log('מחפש אירוע עם ID:', eventId);
     const savedEvents = JSON.parse(localStorage.getItem('clickSeat_events') || '[]');
+    console.log('כל האירועים ב-localStorage:', savedEvents);
+    
     const foundEvent = savedEvents.find(e => e.id == eventId || e.id === parseInt(eventId));
+    console.log('האירוע שנמצא:', foundEvent);
     
     if (foundEvent) {
       setEvent({
         ...foundEvent,
-        time: '19:00',
-        hall: 'אולם ראשי',
-        maxGuests: foundEvent.numberofGuests || 200,
-        confirmedGuests: 150,
-        declinedGuests: 20,
-        pendingGuests: 30,
-        contactPerson: 'דוד כהן',
-        contactPhone: '050-1234567',
-        contactEmail: 'david@example.com',
-        venueAddress: 'רחוב הרצל 123, תל אביב',
-        venuePhone: '03-1234567',
-        notes: foundEvent.condition || 'אירוע מיוחד'
+        time: foundEvent.time || '19:00',
+        hall: foundEvent.place || 'אולם ראשי',
+        maxGuests: foundEvent.numberofGuests || 0,
+        seatingLimit: foundEvent.seatingLimit || 0,
+        confirmedGuests: 0,
+        declinedGuests: 0,
+        pendingGuests: 0,
+        contactPerson: foundEvent.ownerName || 'לא צוין',
+        contactPhone: foundEvent.ownerPhone || 'לא צוין',
+        contactEmail: foundEvent.ownerEmail || 'לא צוין',
+        venueAddress: foundEvent.venueAddress || foundEvent.place || 'לא צוין',
+        venuePhone: foundEvent.venuePhone || 'לא צוין',
+        notes: foundEvent.condition || 'אירוע חדש'
       });
     }
     setLoading(false);
   }, [eventId]);
 
-  const [guests, setGuests] = useState([
-    { id: 1, name: 'משה לוי', status: 'confirmed', phone: '050-1111111', guests: 2 },
-    { id: 2, name: 'רחל כהן', status: 'declined', phone: '050-2222222', guests: 0 },
-    { id: 3, name: 'יוסי ישראלי', status: 'pending', phone: '050-3333333', guests: 1 },
-  ]);
+  const [guests, setGuests] = useState([]);
 
   const getStatusColor = (status) => {
     switch(status) {
@@ -186,40 +187,47 @@ function EventStatus() {
               </button>
             </div>
             
-            <div className="guests-table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>שם</th>
-                    <th>סטטוס</th>
-                    <th>טלפון</th>
-                    <th>מספר אורחים</th>
-                    <th>פעולות</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {guests.map(guest => (
-                    <tr key={guest.id}>
-                      <td>{guest.name}</td>
-                      <td>
-                        <span 
-                          className="status-badge"
-                          style={{ backgroundColor: getStatusColor(guest.status) }}
-                        >
-                          {getStatusText(guest.status)}
-                        </span>
-                      </td>
-                      <td>{guest.phone}</td>
-                      <td>{guest.guests}</td>
-                      <td>
-                        <button className="action-btn">✏️</button>
-                        <button className="action-btn danger">🗑️</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                         <div className="guests-table">
+               {guests.length > 0 ? (
+                 <table>
+                   <thead>
+                     <tr>
+                       <th>שם</th>
+                       <th>סטטוס</th>
+                       <th>טלפון</th>
+                       <th>מספר אורחים</th>
+                       <th>פעולות</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     {guests.map(guest => (
+                       <tr key={guest.id}>
+                         <td>{guest.name}</td>
+                         <td>
+                           <span 
+                             className="status-badge"
+                             style={{ backgroundColor: getStatusColor(guest.status) }}
+                           >
+                             {getStatusText(guest.status)}
+                           </span>
+                         </td>
+                         <td>{guest.phone}</td>
+                         <td>{guest.guests}</td>
+                         <td>
+                           <button className="action-btn">✏️</button>
+                           <button className="action-btn danger">🗑️</button>
+                         </td>
+                       </tr>
+                     ))}
+                   </tbody>
+                 </table>
+               ) : (
+                 <div className="no-guests">
+                   <p>אין אורחים רשומים עדיין</p>
+                   <p>לחץ על "הוסף אורח" כדי להתחיל</p>
+                 </div>
+               )}
+             </div>
           </div>
 
           {/* כפתורי פעולה */}

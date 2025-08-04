@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { HebrewCalendar, Location, HDate } from '@hebcal/core';
+import { useNavigate } from 'react-router-dom';
 import '../style/calendar.css';
 
 function Calendar({ onMenuClick }) {
+  const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const [showEventForm, setShowEventForm] = useState(false);
@@ -11,7 +13,13 @@ function Calendar({ onMenuClick }) {
     title: '',
     description: '',
     time: '',
-    type: 'חתונה'
+    type: 'חתונה',
+    place: '',
+    numberOfGuests: '',
+    seatingLimit: '',
+    ownerName: '',
+    ownerPhone: '',
+    ownerEmail: ''
   });
 
   // פונקציה לקבלת תאריך עברי (גרסה פשוטה)
@@ -158,26 +166,145 @@ function Calendar({ onMenuClick }) {
     setShowEventForm(true);
   };
 
+  const [showEventMenu, setShowEventMenu] = useState(null);
+  const [editingEvent, setEditingEvent] = useState(null);
+
+  const handleEventClick = (event, e) => {
+    e.stopPropagation(); // מונע הפעלת handleDateClick
+    if (event.id && !event.isJewish) {
+      setShowEventMenu(event.id);
+    }
+  };
+
+  const handleEditEvent = (event) => {
+    setEditingEvent(event);
+    setShowEventMenu(null);
+  };
+
+  const handleUpdateEvent = (e) => {
+    e.preventDefault();
+    if (editingEvent) {
+      // עדכון ב-localStorage
+      const existingEvents = JSON.parse(localStorage.getItem('clickSeat_events') || '[]');
+      const updatedEvents = existingEvents.map(event => 
+        event.id === editingEvent.id ? {
+          ...event,
+          name: newEvent.title,
+          kind: newEvent.type,
+          place: newEvent.place,
+          numberOfGuests: newEvent.numberOfGuests,
+          seatingLimit: newEvent.seatingLimit,
+          ownerName: newEvent.ownerName,
+          ownerPhone: newEvent.ownerPhone,
+          ownerEmail: newEvent.ownerEmail,
+          condition: newEvent.description || 'פעיל',
+          time: newEvent.time || '19:00'
+        } : event
+      );
+      localStorage.setItem('clickSeat_events', JSON.stringify(updatedEvents));
+      
+      // עדכון המצב המקומי
+      setEvents(prev => prev.map(event => 
+        event.id === editingEvent.id ? {
+          ...event,
+          title: newEvent.title,
+          description: newEvent.description,
+          time: newEvent.time,
+          type: newEvent.type
+        } : event
+      ));
+      
+      setEditingEvent(null);
+      setNewEvent({
+        title: '',
+        description: '',
+        time: '',
+        type: 'חתונה',
+        place: '',
+        numberOfGuests: '',
+        seatingLimit: '',
+        ownerName: '',
+        ownerPhone: '',
+        ownerEmail: ''
+      });
+      
+      // שליחת אירוע לעדכון
+      window.dispatchEvent(new Event('storage'));
+    }
+  };
+
   const handleAddEvent = (e) => {
     e.preventDefault();
     if (newEvent.title && selectedDate) {
-      const event = {
+      const year = selectedDate.getFullYear();
+      const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+      const day = String(selectedDate.getDate()).padStart(2, '0');
+      const dateString = `${year}-${month}-${day}`;
+      
+      // יצירת אירוע בפורמט של Event.jsx
+      const eventToAdd = {
         id: Date.now(),
-        ...newEvent,
-        date: selectedDate.toISOString().split('T')[0],
-        fullDate: selectedDate.toISOString()
+        name: newEvent.title,
+        kind: newEvent.type,
+        place: newEvent.place,
+        numberOfGuests: newEvent.numberOfGuests,
+        seatingLimit: newEvent.seatingLimit,
+        ownerName: newEvent.ownerName,
+        ownerPhone: newEvent.ownerPhone,
+        ownerEmail: newEvent.ownerEmail,
+        condition: newEvent.description || 'פעיל',
+        date: `${day}-${month}-${year}`, // פורמט DD-MM-YYYY
+        time: newEvent.time || '19:00'
       };
       
-      setEvents(prev => [...prev, event]);
-      setNewEvent({ title: '', description: '', time: '', type: 'חתונה' });
+      // שמירה ב-localStorage
+      const existingEvents = JSON.parse(localStorage.getItem('clickSeat_events') || '[]');
+      const updatedEvents = [...existingEvents, eventToAdd];
+      localStorage.setItem('clickSeat_events', JSON.stringify(updatedEvents));
+      
+      // עדכון המצב המקומי
+      setEvents(prev => [...prev, {
+        id: eventToAdd.id,
+        title: eventToAdd.name,
+        description: eventToAdd.condition,
+        time: eventToAdd.time,
+        type: eventToAdd.kind,
+        date: dateString,
+        fullDate: selectedDate.toISOString()
+      }]);
+      
+      setNewEvent({
+        title: '',
+        description: '',
+        time: '',
+        type: 'חתונה',
+        place: '',
+        numberOfGuests: '',
+        seatingLimit: '',
+        ownerName: '',
+        ownerPhone: '',
+        ownerEmail: ''
+      });
       setShowEventForm(false);
       setSelectedDate(null);
+      
+      // שליחת אירוע לעדכון
+      window.dispatchEvent(new Event('storage'));
     }
   };
 
   const deleteEvent = (eventId) => {
     if (window.confirm('האם אתה בטוח שברצונך למחוק את האירוע הזה?')) {
+      // מחיקה מ-localStorage
+      const existingEvents = JSON.parse(localStorage.getItem('clickSeat_events') || '[]');
+      const updatedEvents = existingEvents.filter(event => event.id !== eventId);
+      localStorage.setItem('clickSeat_events', JSON.stringify(updatedEvents));
+      
+      // מחיקה מהמצב המקומי
       setEvents(prev => prev.filter(event => event.id !== eventId));
+      
+      // שליחת אירוע לעדכון
+      window.dispatchEvent(new Event('storage'));
     }
   };
 
@@ -230,12 +357,27 @@ function Calendar({ onMenuClick }) {
          {dayEvents.length > 0 && (
            <div className="events-indicator">
              {dayEvents.slice(0, 1).map(event => (
-               <div 
-                 key={event.id} 
-                 className={`event-title ${event.isJewish ? 'jewish' : ''} ${event.type === 'חג' ? 'holiday' : ''} ${event.type === 'צום' ? 'fast' : ''}`} 
-                 title={event.title}
-               >
-                 {event.title}
+               <div key={event.id} className="event-container">
+                 <div 
+                   className={`event-title ${event.isJewish ? 'jewish' : ''} ${event.type === 'חג' ? 'holiday' : ''} ${event.type === 'צום' ? 'fast' : ''} ${!event.isJewish ? 'clickable' : ''}`} 
+                   title={event.title}
+                   onClick={(e) => handleEventClick(event, e)}
+                 >
+                   {event.title}
+                 </div>
+                 {showEventMenu === event.id && !event.isJewish && (
+                   <div className="event-menu">
+                     <button onClick={() => navigate(`/סטטוס-אירוע/${event.id}`)}>
+                       👁️ צפייה
+                     </button>
+                     <button onClick={() => handleEditEvent(event)}>
+                       ✏️ עריכה
+                     </button>
+                     <button onClick={() => deleteEvent(event.id)}>
+                       🗑️ מחיקה
+                     </button>
+                   </div>
+                 )}
                </div>
              ))}
              {dayEvents.length > 1 && (
@@ -265,61 +407,146 @@ function Calendar({ onMenuClick }) {
         {days}
       </div>
 
-      {/* טופס הוספת אירוע */}
-      {showEventForm && (
+      {/* טופס הוספת/עריכת אירוע */}
+      {(showEventForm || editingEvent) && (
         <div className="event-form-overlay">
           <div className="event-form">
-            <h3>הוספת אירוע ל-{selectedDate?.toLocaleDateString('he-IL')}</h3>
-            <form onSubmit={handleAddEvent}>
-              <div className="form-group">
-                <label>כותרת האירוע:</label>
-                <input
-                  type="text"
-                  value={newEvent.title}
-                  onChange={(e) => setNewEvent(prev => ({ ...prev, title: e.target.value }))}
-                  required
-                />
+            <h3>{editingEvent ? 'עריכת אירוע' : `הוספת אירוע ל-${selectedDate?.toLocaleDateString('he-IL')}`}</h3>
+            <form onSubmit={editingEvent ? handleUpdateEvent : handleAddEvent}>
+              {/* פרטי בעל האירוע */}
+              <div className="form-section">
+                <h4>פרטי בעל האירוע</h4>
+                <div className="form-group">
+                  <label>*שם בעל האירוע:</label>
+                  <input
+                    type="text"
+                    value={newEvent.ownerName}
+                    onChange={(e) => setNewEvent(prev => ({ ...prev, ownerName: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>*טלפון:</label>
+                  <input
+                    type="tel"
+                    value={newEvent.ownerPhone}
+                    onChange={(e) => setNewEvent(prev => ({ ...prev, ownerPhone: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>*אימייל:</label>
+                  <input
+                    type="email"
+                    value={newEvent.ownerEmail}
+                    onChange={(e) => setNewEvent(prev => ({ ...prev, ownerEmail: e.target.value }))}
+                    required
+                  />
+                </div>
               </div>
-              
-              <div className="form-group">
-                <label>סוג האירוע:</label>
-                <select
-                  value={newEvent.type}
-                  onChange={(e) => setNewEvent(prev => ({ ...prev, type: e.target.value }))}
-                >
-                  <option value="חתונה">חתונה</option>
-                  <option value="בר מצווה">בר מצווה</option>
-                  <option value="ברית">ברית</option>
-                  <option value="יום הולדת">יום הולדת</option>
-                  <option value="אירוע עסקי">אירוע עסקי</option>
-                  <option value="אחר">אחר</option>
-                </select>
-              </div>
-              
-              <div className="form-group">
-                <label>שעה:</label>
-                <input
-                  type="time"
-                  value={newEvent.time}
-                  onChange={(e) => setNewEvent(prev => ({ ...prev, time: e.target.value }))}
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>תיאור:</label>
-                <textarea
-                  value={newEvent.description}
-                  onChange={(e) => setNewEvent(prev => ({ ...prev, description: e.target.value }))}
-                  rows="3"
-                />
+
+              {/* פרטי האירוע */}
+              <div className="form-section">
+                <h4>פרטי האירוע</h4>
+                <div className="form-group">
+                  <label>*שם האירוע:</label>
+                  <input
+                    type="text"
+                    value={newEvent.title}
+                    onChange={(e) => setNewEvent(prev => ({ ...prev, title: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>סוג אירוע:</label>
+                  <select
+                    value={newEvent.type}
+                    onChange={(e) => setNewEvent(prev => ({ ...prev, type: e.target.value }))}
+                    required
+                  >
+                    <option value="">בחר</option>
+                    <option value="חתונה">חתונה</option>
+                    <option value="בר מצווה">בר מצווה</option>
+                    <option value="ברית">ברית</option>
+                    <option value="יום הולדת">יום הולדת</option>
+                    <option value="אירוע עסקי">אירוע עסקי</option>
+                    <option value="אחר">אחר</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>אולם:</label>
+                  <select
+                    value={newEvent.place}
+                    onChange={(e) => setNewEvent(prev => ({ ...prev, place: e.target.value }))}
+                    required
+                  >
+                    <option value="">בחר</option>
+                    <option value="אולם ראשי">אולם ראשי</option>
+                    <option value="אולם משני">אולם משני</option>
+                    <option value="גן אירועים">גן אירועים</option>
+                    <option value="מסעדה">מסעדה</option>
+                    <option value="אחר">אחר</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>*שעה:</label>
+                  <input
+                    type="time"
+                    value={newEvent.time}
+                    onChange={(e) => setNewEvent(prev => ({ ...prev, time: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>*מספר אורחים:</label>
+                  <input
+                    type="number"
+                    value={newEvent.numberOfGuests}
+                    onChange={(e) => setNewEvent(prev => ({ ...prev, numberOfGuests: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>הגבלת כמות אורחים להושבה:</label>
+                  <input
+                    type="number"
+                    value={newEvent.seatingLimit}
+                    onChange={(e) => setNewEvent(prev => ({ ...prev, seatingLimit: e.target.value }))}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>פרטים נוספים:</label>
+                  <textarea
+                    value={newEvent.description}
+                    onChange={(e) => setNewEvent(prev => ({ ...prev, description: e.target.value }))}
+                    rows="3"
+                  />
+                </div>
               </div>
               
               <div className="form-buttons">
-                <button type="submit" className="btn-primary">הוסף אירוע</button>
+                <button type="submit" className="btn-primary">
+                  {editingEvent ? 'עדכן אירוע' : 'הוסף אירוע'}
+                </button>
                 <button 
                   type="button" 
                   className="btn-secondary"
-                  onClick={() => setShowEventForm(false)}
+                  onClick={() => {
+                    setShowEventForm(false);
+                    setEditingEvent(null);
+                    setNewEvent({
+                      title: '',
+                      description: '',
+                      time: '',
+                      type: 'חתונה',
+                      place: '',
+                      numberOfGuests: '',
+                      seatingLimit: '',
+                      ownerName: '',
+                      ownerPhone: '',
+                      ownerEmail: ''
+                    });
+                  }}
                 >
                   ביטול
                 </button>

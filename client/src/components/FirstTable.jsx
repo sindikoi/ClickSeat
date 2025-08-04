@@ -105,8 +105,10 @@ function FirstTable() {
 
   const viewEventStatus = (rowIndex) => {
     const event = data[rowIndex];
-    // כאן אפשר להוסיף ניווט לעמוד סטטוס האירוע
-    navigate(`/סטטוס-אירוע/${rowIndex}`);
+    console.log('מעביר אירוע לסטטוס:', event);
+    console.log('ID של האירוע:', event.id);
+    // ניווט לעמוד סטטוס האירוע עם ה-ID הייחודי
+    navigate(`/סטטוס-אירוע/${event.id}`);
   }
 
   const viewSeatingMap = (rowIndex) => {
