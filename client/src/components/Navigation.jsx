@@ -29,6 +29,9 @@ const Navigation = () => {
           <li className={isActive('/אירוע') ? 'active' : ''}>
             <Link to="/אירוע">יצירת אירוע</Link>
           </li>
+          <li className={isActive('/לוח-שנה') ? 'active' : ''}>
+            <Link to="/לוח-שנה">לוח שנה</Link>
+          </li>
         </ul>
       </div>
     </nav>

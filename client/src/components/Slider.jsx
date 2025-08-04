@@ -1,17 +1,20 @@
 import "../style/slider.css";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
-function Slider({ onMenuClick }) {
+function Slider() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleSlider = () => {
     setIsOpen(!isOpen);
   };
 
   const handleMenuClick = (menuItem) => {
-    console.log('לחיצה על תפריט:', menuItem);
-    if (onMenuClick) {
-      onMenuClick(menuItem);
+    if (menuItem === 'ראשי') {
+      navigate('/דף בית');
+    } else if (menuItem === 'לוח אירועים') {
+      navigate('/לוח-שנה');
     }
     // סגירת הסליידר אחרי לחיצה
     setIsOpen(false);

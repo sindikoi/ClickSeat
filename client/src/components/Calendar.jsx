@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { HebrewCalendar, Location, HDate } from '@hebcal/core';
 import { useNavigate } from 'react-router-dom';
 import '../style/calendar.css';
 
-function Calendar({ onMenuClick }) {
+function Calendar() {
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
+  const [jewishEvents, setJewishEvents] = useState([]); // State for Jewish events
   const [showEventForm, setShowEventForm] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [newEvent, setNewEvent] = useState({
@@ -22,76 +23,75 @@ function Calendar({ onMenuClick }) {
     ownerEmail: ''
   });
 
-  // פונקציה לקבלת תאריך עברי (גרסה פשוטה)
   const getHebrewDate = (gregorianDate) => {
     try {
       const hd = new HDate(gregorianDate);
-      const hebrewMonths = [
-        'ניסן', 'אייר', 'סיוון', 'תמוז', 'אב', 'אלול',
-        'תשרי', 'חשוון', 'כסלו', 'טבת', 'שבט', 'אדר'
-      ];
-      const monthName = hebrewMonths[hd.getMonth() - 1];
-      return `${hd.getDate()} ${monthName}`;
+      return hd.renderGematriya(true); // Using a more robust rendering
     } catch (e) {
       return '';
     }
   };
 
-  // פונקציה לקבלת אירועים יהודיים לחודש נתון
-  const getJewishEventsForMonth = (year, month) => {
-    try {
-      const startDate = new Date(year, month, 1);
-      const endDate = new Date(year, month + 1, 0);
-      
-      const options = {
-        start: startDate,
-        end: endDate,
-        location: Location.lookup('Jerusalem'),
-        sedrot: true,
-        candlelighting: true,
-        language: 'he'
-      };
-      
-      const events = HebrewCalendar.calendar(options);
-      return events.map(event => ({
-        id: `jewish-${event.basename}-${event.getDate().getTime()}`,
-        title: event.render(),
-        date: event.getDate().toISOString().split('T')[0],
-        type: event.getCategories().includes('holiday') ? 'חג' : 
-              event.getCategories().includes('fast') ? 'צום' : 'אירוע',
-        isJewish: true
-      }));
-    } catch (error) {
-      console.error('שגיאה בטעינת אירועים יהודיים:', error);
-      return [];
-    }
-  };
+  // Fetch Jewish events only when the month changes
+  useEffect(() => {
+    const getJewishEventsForMonth = (year, month) => {
+      try {
+        const startDate = new Date(year, month, 1);
+        const endDate = new Date(year, month + 1, 0);
+        
+        const options = {
+          start: startDate,
+          end: endDate,
+          isHebrewYear: true,
+          location: Location.lookup('Jerusalem'),
+          sedrot: false, // Do not fetch weekly portions
+          candlelighting: false, // Do not fetch candle lighting times
+          omer: true, // Include omer count
+          holidays: true,
+          language: 'he'
+        };
+        
+        const hebrewCalEvents = HebrewCalendar.calendar(options);
+        
+        // Filter to get only holidays and important events
+        const filteredEvents = hebrewCalEvents.filter(ev => {
+            const cat = ev.getCategories();
+            return cat.includes('holiday') || cat.includes('fast') || cat.includes('omer') || ev.getDesc() === 'Rosh Chodesh';
+        });
 
-  // פונקציה לטיפול בלחיצות על תפריט הסליידר
-  const handleSliderMenuClick = (menuItem) => {
-    if (onMenuClick) {
-      onMenuClick(menuItem);
-    }
-  };
+        return filteredEvents.map(event => ({
+          id: `jewish-${event.basename}-${event.getDate().greg().getTime()}`,
+          title: event.render('he'),
+          date: event.getDate().greg().toISOString().split('T')[0],
+          type: event.getCategories().includes('holiday') ? 'חג' : 
+                event.getCategories().includes('fast') ? 'צום' : 'אירוע',
+          isJewish: true
+        }));
+      } catch (error) {
+        console.error('שגיאה בטעינת אירועים יהודיים:', error);
+        return [];
+      }
+    };
+    
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const fetchedJewishEvents = getJewishEventsForMonth(year, month);
+    setJewishEvents(fetchedJewishEvents);
 
-  // טעינת אירועים מ-localStorage
+  }, [currentDate]);
+
+
+  // Load user events from localStorage
   useEffect(() => {
     const loadEvents = () => {
       const savedEvents = localStorage.getItem('clickSeat_events');
-      console.log('טוען אירועים מהלוח שנה:', savedEvents);
-      
       if (savedEvents) {
         try {
           const eventsData = JSON.parse(savedEvents);
-          console.log('אירועים שטענו:', eventsData);
-          
-          // המרת האירועים לפורמט של הלוח שנה
           const calendarEvents = eventsData.map(event => {
-            // המרת התאריך מ-DD-MM-YYYY ל-YYYY-MM-DD עבור הלוח שנה
             const dateParts = event.date.split('-');
             const formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
-            
-            const calendarEvent = {
+            return {
               id: event.id,
               title: event.name,
               description: event.condition || '',
@@ -100,22 +100,16 @@ function Calendar({ onMenuClick }) {
               date: formattedDate,
               fullDate: new Date(formattedDate).toISOString()
             };
-            console.log('אירוע לוח שנה:', calendarEvent);
-            return calendarEvent;
           });
-          console.log('כל אירועי הלוח שנה:', calendarEvents);
           setEvents(calendarEvents);
         } catch (error) {
           console.error('שגיאה בטעינת אירועים:', error);
         }
-      } else {
-        console.log('אין אירועים ב-localStorage');
       }
     };
 
     loadEvents();
 
-    // האזנה לשינויים ב-localStorage
     const handleStorageChange = () => {
       loadEvents();
     };
@@ -123,11 +117,6 @@ function Calendar({ onMenuClick }) {
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
-
-  // שמירת אירועים ל-localStorage (לא נדרש כי האירועים נשמרים בעמוד יצירת אירוע)
-  // useEffect(() => {
-  //   localStorage.setItem('clickSeat_calendar_events', JSON.stringify(events));
-  // }, [events]);
 
   const getDaysInMonth = (date) => {
     const year = date.getFullYear();
@@ -170,14 +159,13 @@ function Calendar({ onMenuClick }) {
   const [editingEvent, setEditingEvent] = useState(null);
 
   const handleEventClick = (event, e) => {
-    e.stopPropagation(); // מונע הפעלת handleDateClick
+    e.stopPropagation();
     if (event.id && !event.isJewish) {
       setShowEventMenu(event.id);
     }
   };
 
   const handleEditEvent = (event) => {
-    // טעינת נתוני האירוע מהלוח שנה
     const savedEvents = JSON.parse(localStorage.getItem('clickSeat_events') || '[]');
     const savedEvent = savedEvents.find(e => e.id === event.id);
     
@@ -216,7 +204,6 @@ function Calendar({ onMenuClick }) {
   const handleUpdateEvent = (e) => {
     e.preventDefault();
     if (editingEvent) {
-      // עדכון ב-localStorage
       const existingEvents = JSON.parse(localStorage.getItem('clickSeat_events') || '[]');
       const updatedEvents = existingEvents.map(event => 
         event.id === editingEvent.id ? {
@@ -235,7 +222,6 @@ function Calendar({ onMenuClick }) {
       );
       localStorage.setItem('clickSeat_events', JSON.stringify(updatedEvents));
       
-      // עדכון המצב המקומי
       setEvents(prev => prev.map(event => 
         event.id === editingEvent.id ? {
           ...event,
@@ -247,20 +233,7 @@ function Calendar({ onMenuClick }) {
       ));
       
       setEditingEvent(null);
-      setNewEvent({
-        title: '',
-        description: '',
-        time: '',
-        type: 'חתונה',
-        place: '',
-        numberOfGuests: '',
-        seatingLimit: '',
-        ownerName: '',
-        ownerPhone: '',
-        ownerEmail: ''
-      });
-      
-      // שליחת אירוע לעדכון
+      setNewEvent({ title: '', description: '', time: '', type: 'חתונה', place: '', numberOfGuests: '', seatingLimit: '', ownerName: '', ownerPhone: '', ownerEmail: '' });
       window.dispatchEvent(new Event('storage'));
     }
   };
@@ -273,7 +246,6 @@ function Calendar({ onMenuClick }) {
       const day = String(selectedDate.getDate()).padStart(2, '0');
       const dateString = `${year}-${month}-${day}`;
       
-      // יצירת אירוע בפורמט של Event.jsx
       const eventToAdd = {
         id: Date.now(),
         name: newEvent.title,
@@ -285,16 +257,14 @@ function Calendar({ onMenuClick }) {
         ownerPhone: newEvent.ownerPhone,
         ownerEmail: newEvent.ownerEmail,
         condition: newEvent.description || 'פעיל',
-        date: `${day}-${month}-${year}`, // פורמט DD-MM-YYYY
+        date: `${day}-${month}-${year}`,
         time: newEvent.time || '19:00'
       };
       
-      // שמירה ב-localStorage
       const existingEvents = JSON.parse(localStorage.getItem('clickSeat_events') || '[]');
       const updatedEvents = [...existingEvents, eventToAdd];
       localStorage.setItem('clickSeat_events', JSON.stringify(updatedEvents));
       
-      // עדכון המצב המקומי
       setEvents(prev => [...prev, {
         id: eventToAdd.id,
         title: eventToAdd.name,
@@ -305,78 +275,50 @@ function Calendar({ onMenuClick }) {
         fullDate: selectedDate.toISOString()
       }]);
       
-      setNewEvent({
-        title: '',
-        description: '',
-        time: '',
-        type: 'חתונה',
-        place: '',
-        numberOfGuests: '',
-        seatingLimit: '',
-        ownerName: '',
-        ownerPhone: '',
-        ownerEmail: ''
-      });
+      setNewEvent({ title: '', description: '', time: '', type: 'חתונה', place: '', numberOfGuests: '', seatingLimit: '', ownerName: '', ownerPhone: '', ownerEmail: '' });
       setShowEventForm(false);
       setSelectedDate(null);
       
-      // שליחת אירוע לעדכון
       window.dispatchEvent(new Event('storage'));
     }
   };
 
   const deleteEvent = (eventId) => {
     if (window.confirm('האם אתה בטוח שברצונך למחוק את האירוע הזה?')) {
-      // מחיקה מ-localStorage
       const existingEvents = JSON.parse(localStorage.getItem('clickSeat_events') || '[]');
       const updatedEvents = existingEvents.filter(event => event.id !== eventId);
       localStorage.setItem('clickSeat_events', JSON.stringify(updatedEvents));
       
-      // מחיקה מהמצב המקומי
       setEvents(prev => prev.filter(event => event.id !== eventId));
-      
-      // שליחת אירוע לעדכון
       window.dispatchEvent(new Event('storage'));
     }
   };
 
   const getEventsForDate = (day) => {
-    // יצירת תאריך בפורמט YYYY-MM-DD
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
     const dayStr = String(day).padStart(2, '0');
     const dateString = `${year}-${month}-${dayStr}`;
     
-    // קבלת אירועים יהודיים לחודש הנוכחי
-    const jewishEvents = getJewishEventsForMonth(year, currentDate.getMonth());
+    const userEvents = events.filter(event => event.date === dateString);
+    const dayJewishEvents = jewishEvents.filter(event => event.date === dateString);
     
-    // שילוב אירועים רגילים ואירועים יהודיים
-    const allEvents = [...events, ...jewishEvents];
-    
-    console.log('מחפש אירועים לתאריך:', dateString);
-    console.log('כל האירועים:', allEvents);
-    
-    const dayEvents = allEvents.filter(event => event.date === dateString);
-    console.log('אירועים שנמצאו:', dayEvents);
-    
-    return dayEvents;
+    return [...userEvents, ...dayJewishEvents];
   };
 
   const { daysInMonth, startingDay } = getDaysInMonth(currentDate);
   const days = [];
   
-  // הוספת ימים ריקים בתחילת החודש
   for (let i = 0; i < startingDay; i++) {
     days.push(<div key={`empty-${i}`} className="calendar-day empty"></div>);
   }
   
-  // הוספת ימי החודש
   for (let day = 1; day <= daysInMonth; day++) {
     const dayEvents = getEventsForDate(day);
     const isToday = new Date().toDateString() === new Date(currentDate.getFullYear(), currentDate.getMonth(), day).toDateString();
     
-         const currentDateObj = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
-     const hebrewDate = getHebrewDate(currentDateObj);
+    const currentDateObj = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+    const hebrewDate = getHebrewDate(currentDateObj);
      
      days.push(
        <div 
@@ -388,14 +330,14 @@ function Calendar({ onMenuClick }) {
          <span className="hebrew-date">{hebrewDate}</span>
          {dayEvents.length > 0 && (
            <div className="events-indicator">
-             {dayEvents.slice(0, 2).map(event => (
+             {dayEvents.slice(0, 3).map(event => ( // Increased to 3
                <div key={event.id} className="event-container">
                  <div 
                    className={`event-title ${event.isJewish ? 'jewish' : ''} ${event.type === 'חג' ? 'holiday' : ''} ${event.type === 'צום' ? 'fast' : ''} ${!event.isJewish ? 'clickable' : ''}`} 
                    title={event.title}
                    onClick={(e) => handleEventClick(event, e)}
                  >
-                   {event.title.length > 8 ? event.title.substring(0, 8) + '...' : event.title}
+                   {event.title}
                  </div>
                  {showEventMenu === event.id && !event.isJewish && (
                    <div className="event-menu">
@@ -412,8 +354,8 @@ function Calendar({ onMenuClick }) {
                  )}
                </div>
              ))}
-             {dayEvents.length > 2 && (
-               <div className="more-events">+{dayEvents.length - 2}</div>
+             {dayEvents.length > 3 && (
+               <div className="more-events">+{dayEvents.length - 3}</div>
              )}
            </div>
          )}
@@ -421,7 +363,6 @@ function Calendar({ onMenuClick }) {
      );
   }
 
-  // סגירת התפריט כשלוחצים מחוץ לו
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showEventMenu && !event.target.closest('.event-container')) {
@@ -453,63 +394,36 @@ function Calendar({ onMenuClick }) {
         {days}
       </div>
 
-      {/* טופס הוספת/עריכת אירוע */}
       {(showEventForm || editingEvent) && (
         <div className="event-form-overlay">
           <div className="event-form">
             <h3>{editingEvent ? 'עריכת אירוע' : `הוספת אירוע ל-${selectedDate?.toLocaleDateString('he-IL')}`}</h3>
             <form onSubmit={editingEvent ? handleUpdateEvent : handleAddEvent}>
-              {/* פרטי בעל האירוע */}
               <div className="form-section">
                 <h4>פרטי בעל האירוע</h4>
                 <div className="form-group">
                   <label>*שם בעל האירוע:</label>
-                  <input
-                    type="text"
-                    value={newEvent.ownerName}
-                    onChange={(e) => setNewEvent(prev => ({ ...prev, ownerName: e.target.value }))}
-                    required
-                  />
+                  <input type="text" value={newEvent.ownerName} onChange={(e) => setNewEvent(prev => ({ ...prev, ownerName: e.target.value }))} required />
                 </div>
                 <div className="form-group">
                   <label>*טלפון:</label>
-                  <input
-                    type="tel"
-                    value={newEvent.ownerPhone}
-                    onChange={(e) => setNewEvent(prev => ({ ...prev, ownerPhone: e.target.value }))}
-                    required
-                  />
+                  <input type="tel" value={newEvent.ownerPhone} onChange={(e) => setNewEvent(prev => ({ ...prev, ownerPhone: e.target.value }))} required />
                 </div>
                 <div className="form-group">
                   <label>*אימייל:</label>
-                  <input
-                    type="email"
-                    value={newEvent.ownerEmail}
-                    onChange={(e) => setNewEvent(prev => ({ ...prev, ownerEmail: e.target.value }))}
-                    required
-                  />
+                  <input type="email" value={newEvent.ownerEmail} onChange={(e) => setNewEvent(prev => ({ ...prev, ownerEmail: e.target.value }))} required />
                 </div>
               </div>
 
-              {/* פרטי האירוע */}
               <div className="form-section">
                 <h4>פרטי האירוע</h4>
                 <div className="form-group">
                   <label>*שם האירוע:</label>
-                  <input
-                    type="text"
-                    value={newEvent.title}
-                    onChange={(e) => setNewEvent(prev => ({ ...prev, title: e.target.value }))}
-                    required
-                  />
+                  <input type="text" value={newEvent.title} onChange={(e) => setNewEvent(prev => ({ ...prev, title: e.target.value }))} required />
                 </div>
                 <div className="form-group">
                   <label>סוג אירוע:</label>
-                  <select
-                    value={newEvent.type}
-                    onChange={(e) => setNewEvent(prev => ({ ...prev, type: e.target.value }))}
-                    required
-                  >
+                  <select value={newEvent.type} onChange={(e) => setNewEvent(prev => ({ ...prev, type: e.target.value }))} required>
                     <option value="">בחר</option>
                     <option value="חתונה">חתונה</option>
                     <option value="בר מצווה">בר מצווה</option>
@@ -521,11 +435,7 @@ function Calendar({ onMenuClick }) {
                 </div>
                 <div className="form-group">
                   <label>אולם:</label>
-                  <select
-                    value={newEvent.place}
-                    onChange={(e) => setNewEvent(prev => ({ ...prev, place: e.target.value }))}
-                    required
-                  >
+                  <select value={newEvent.place} onChange={(e) => setNewEvent(prev => ({ ...prev, place: e.target.value }))} required>
                     <option value="">בחר</option>
                     <option value="אולם ראשי">אולם ראשי</option>
                     <option value="אולם משני">אולם משני</option>
@@ -536,37 +446,19 @@ function Calendar({ onMenuClick }) {
                 </div>
                 <div className="form-group">
                   <label>*שעה:</label>
-                  <input
-                    type="time"
-                    value={newEvent.time}
-                    onChange={(e) => setNewEvent(prev => ({ ...prev, time: e.target.value }))}
-                    required
-                  />
+                  <input type="time" value={newEvent.time} onChange={(e) => setNewEvent(prev => ({ ...prev, time: e.target.value }))} required />
                 </div>
                 <div className="form-group">
                   <label>*מספר אורחים:</label>
-                  <input
-                    type="number"
-                    value={newEvent.numberOfGuests}
-                    onChange={(e) => setNewEvent(prev => ({ ...prev, numberOfGuests: e.target.value }))}
-                    required
-                  />
+                  <input type="number" value={newEvent.numberOfGuests} onChange={(e) => setNewEvent(prev => ({ ...prev, numberOfGuests: e.target.value }))} required />
                 </div>
                 <div className="form-group">
                   <label>הגבלת כמות אורחים להושבה:</label>
-                  <input
-                    type="number"
-                    value={newEvent.seatingLimit}
-                    onChange={(e) => setNewEvent(prev => ({ ...prev, seatingLimit: e.target.value }))}
-                  />
+                  <input type="number" value={newEvent.seatingLimit} onChange={(e) => setNewEvent(prev => ({ ...prev, seatingLimit: e.target.value }))} />
                 </div>
                 <div className="form-group">
                   <label>פרטים נוספים:</label>
-                  <textarea
-                    value={newEvent.description}
-                    onChange={(e) => setNewEvent(prev => ({ ...prev, description: e.target.value }))}
-                    rows="3"
-                  />
+                  <textarea value={newEvent.description} onChange={(e) => setNewEvent(prev => ({ ...prev, description: e.target.value }))} rows="3" />
                 </div>
               </div>
               
@@ -574,26 +466,7 @@ function Calendar({ onMenuClick }) {
                 <button type="submit" className="btn-primary">
                   {editingEvent ? 'עדכן אירוע' : 'הוסף אירוע'}
                 </button>
-                <button 
-                  type="button" 
-                  className="btn-secondary"
-                  onClick={() => {
-                    setShowEventForm(false);
-                    setEditingEvent(null);
-                    setNewEvent({
-                      title: '',
-                      description: '',
-                      time: '',
-                      type: 'חתונה',
-                      place: '',
-                      numberOfGuests: '',
-                      seatingLimit: '',
-                      ownerName: '',
-                      ownerPhone: '',
-                      ownerEmail: ''
-                    });
-                  }}
-                >
+                <button type="button" className="btn-secondary" onClick={() => { setShowEventForm(false); setEditingEvent(null); setNewEvent({ title: '', description: '', time: '', type: 'חתונה', place: '', numberOfGuests: '', seatingLimit: '', ownerName: '', ownerPhone: '', ownerEmail: '' }); }}>
                   ביטול
                 </button>
               </div>
@@ -601,10 +474,8 @@ function Calendar({ onMenuClick }) {
           </div>
         </div>
       )}
-
-      
     </div>
   );
 }
 
-export default Calendar; 
+export default Calendar;
