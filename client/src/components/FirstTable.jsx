@@ -47,12 +47,12 @@ function FirstTable() {
   };
 
   const columns = [
-    { header: 'מצב האירוע', accessorKey: 'condition' },
-    { header: 'מספר אורחים', accessorKey: 'numberofGuests' },
-    { header: 'אולם', accessorKey: 'place' },
-    { header: 'סוג האירוע', accessorKey: 'kind' },
-    { header: 'שם האירוע', accessorKey: 'name' },
     { header: 'תאריך', accessorKey: 'date' },
+    { header: 'שם האירוע', accessorKey: 'name' },
+    { header: 'סוג האירוע', accessorKey: 'kind' },
+    { header: 'אולם', accessorKey: 'place' },
+    { header: 'מספר אורחים', accessorKey: 'numberofGuests' },
+    { header: 'מצב האירוע', accessorKey: 'condition' },
   ];
 
   const tableItem = useReactTable({ data, columns });
@@ -151,11 +151,11 @@ function FirstTable() {
                           // כפתור מצב האירוע עם תפריט נפתח
                           <div className="status-dropdown">
                             <button
-                              className="status-btn"
+                              className="status-btn-new"
                               onClick={() => menuoButtom(rowIndex)}
                               title="אפשרויות האירוע"
                             >
-                              ⚙️ פעולות
+                              🔧 ניהול אירוע
                             </button>
                             {isOpen === rowIndex && (
                               <div className="status-menu">

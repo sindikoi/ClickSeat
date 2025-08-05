@@ -8,20 +8,27 @@
 }
 
 .nav-container {
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 40px 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   height: 70px;
+  position: relative;
+}
+
+.nav-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .nav-logo a {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: bold;
   color: #007bff;
-  text-decoration: none;
+  text-decoration: right;
   transition: color 0.3s;
 }
 
@@ -35,6 +42,8 @@
   margin: 0;
   padding: 0;
   gap: 30px;
+  position: absolute;
+  left: 20px;
 }
 
 .nav-links li {
@@ -42,13 +51,16 @@
 }
 
 .nav-links a {
+ 
   text-decoration: none;
   color: #333;
-  font-weight: 500;
-  padding: 10px 15px;
+  font-weight: bold;
+  padding: 50px 15px;
   border-radius: 8px;
   transition: all 0.3s;
   display: block;
+  font-size: 1.5rem;
+  text-align: left;
 }
 
 .nav-links a:hover {

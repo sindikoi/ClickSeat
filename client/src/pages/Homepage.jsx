@@ -7,9 +7,11 @@ import '../style/tables.css';
 function Homepage() {
   return (
     <div className="wrapper">
-      <div className="allPages">
-        <Sliderup />
-        <FirstTable />
+      <Sliderup />
+      <div className="homepage-page">
+        <div className="homepage-container">
+          <FirstTable />
+        </div>
       </div>
       <Slider />
     </div>

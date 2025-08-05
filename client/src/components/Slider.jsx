@@ -74,18 +74,6 @@ function Slider() {
             </button>
             <button
               className="menu-item"
-              onClick={() => handleMenuClick('משתמשים')}
-            >
-              👥 משתמשים
-            </button>
-            <button
-              className="menu-item"
-              onClick={() => handleMenuClick('הודעות')}
-            >
-              📧 הודעות
-            </button>
-            <button
-              className="menu-item"
               onClick={() => handleMenuClick('לוח אירועים')}
             >
               📅 לוח אירועים

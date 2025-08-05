@@ -86,9 +86,9 @@ function EventStatus() {
 
   return (
     <div className="wrapper">
-      <div className="allPages">
-        <Sliderup />
-        <div className="event-status-page">
+      <Sliderup />
+      <div className="event-status-page">
+        <div className="status-container">
           <div className="status-header">
             <button className="back-btn" onClick={() => navigate(-1)}>
               ◀ חזור לדף הקודם

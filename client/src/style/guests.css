@@ -33,13 +33,16 @@ body {
 }
 
 .guests-page {
-  max-width: 1200px;
-  margin: 0 auto;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 250px;
+  bottom: 0;
   padding: 20px;
-  direction: rtl;
-  min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  background-attachment: fixed;
+  overflow-y: auto;
+  z-index: 100;
+  direction: rtl;
 }
 
 .page-header {
@@ -249,10 +252,85 @@ body {
   gap: 20px;
 }
 
-.input-group {
+.input-group, .field-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.field-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.field-group.half-width {
+  grid-column: span 1;
+}
+
+.field-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+  text-align: right;
+  margin-bottom: 8px;
+}
+
+.field-input, .field-textarea {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: #fafafa;
+  color: var(--text-primary);
+  font-family: inherit;
+  text-align: right;
+  direction: rtl;
+}
+
+.field-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 25px;
+  padding: 15px 20px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 30px;
+  grid-column: 1 / -1;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 180px;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
 }
 
 .input-group label {

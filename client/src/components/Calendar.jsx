@@ -178,11 +178,17 @@ function Calendar() {
   };
 
   const [showEventMenu, setShowEventMenu] = useState(null);
+  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
   const [editingEvent, setEditingEvent] = useState(null);
 
   const handleEventClick = (event, e) => {
     e.stopPropagation();
     if (event.id && !event.isJewish) {
+      const rect = e.target.getBoundingClientRect();
+      setMenuPosition({
+        x: rect.left + window.scrollX,
+        y: rect.bottom + window.scrollY + 5
+      });
       setShowEventMenu(event.id);
     }
   };
@@ -418,7 +424,13 @@ function Calendar() {
                     {event.title}
                   </div>
                   {showEventMenu === event.id && !event.isJewish && (
-                    <div className="event-menu">
+                    <div 
+                      className="event-menu"
+                      style={{
+                        left: `${menuPosition.x}px`,
+                        top: `${menuPosition.y}px`
+                      }}
+                    >
                       <button
                         onClick={() => navigate(`/סטטוס-אירוע/${event.id}`)}
                       >
@@ -491,165 +503,187 @@ function Calendar() {
             </h3>
             <form onSubmit={editingEvent ? handleUpdateEvent : handleAddEvent}>
               <div className="form-section">
-                <h4>פרטי בעל האירוע</h4>
-                <div className="form-group">
-                  <label>*שם בעל האירוע:</label>
-                  <input
-                    type="text"
-                    value={newEvent.ownerName}
-                    onChange={(e) =>
-                      setNewEvent((prev) => ({
-                        ...prev,
-                        ownerName: e.target.value,
-                      }))
-                    }
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>*טלפון:</label>
-                  <input
-                    type="tel"
-                    value={newEvent.ownerPhone}
-                    onChange={(e) =>
-                      setNewEvent((prev) => ({
-                        ...prev,
-                        ownerPhone: e.target.value,
-                      }))
-                    }
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>*אימייל:</label>
-                  <input
-                    type="email"
-                    value={newEvent.ownerEmail}
-                    onChange={(e) =>
-                      setNewEvent((prev) => ({
-                        ...prev,
-                        ownerEmail: e.target.value,
-                      }))
-                    }
-                    required
-                  />
+                <h4 className="section-title">פרטי בעל האירוע</h4>
+                <div className="form-grid">
+                  <div className="field-group half-width">
+                    <label className="field-label required">שם בעל האירוע</label>
+                    <input
+                      type="text"
+                      value={newEvent.ownerName}
+                      onChange={(e) =>
+                        setNewEvent((prev) => ({
+                          ...prev,
+                          ownerName: e.target.value,
+                        }))
+                      }
+                      className="field-input"
+                      placeholder="שם פרטי ומשפחה"
+                      required
+                    />
+                  </div>
+                  <div className="field-group half-width">
+                    <label className="field-label required">טלפון נייד</label>
+                    <input
+                      type="tel"
+                      value={newEvent.ownerPhone}
+                      onChange={(e) =>
+                        setNewEvent((prev) => ({
+                          ...prev,
+                          ownerPhone: e.target.value,
+                        }))
+                      }
+                      className="field-input"
+                      placeholder="050-1234567"
+                      required
+                    />
+                  </div>
+                  <div className="field-group full-width">
+                    <label className="field-label required">אימייל</label>
+                    <input
+                      type="email"
+                      value={newEvent.ownerEmail}
+                      onChange={(e) =>
+                        setNewEvent((prev) => ({
+                          ...prev,
+                          ownerEmail: e.target.value,
+                        }))
+                      }
+                      className="field-input"
+                      placeholder="example@email.com"
+                      required
+                    />
+                  </div>
                 </div>
               </div>
 
               <div className="form-section">
-                <h4>פרטי האירוע</h4>
-                <div className="form-group">
-                  <label>*שם האירוע:</label>
-                  <input
-                    type="text"
-                    value={newEvent.title}
-                    onChange={(e) =>
-                      setNewEvent((prev) => ({
-                        ...prev,
-                        title: e.target.value,
-                      }))
-                    }
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>סוג אירוע:</label>
-                  <select
-                    value={newEvent.type}
-                    onChange={(e) =>
-                      setNewEvent((prev) => ({ ...prev, type: e.target.value }))
-                    }
-                    required
-                  >
-                    <option value="">בחר</option>
-                    <option value="חתונה">חתונה</option>
-                    <option value="בר מצווה">בר מצווה</option>
-                    <option value="ברית">ברית</option>
-                    <option value="יום הולדת">יום הולדת</option>
-                    <option value="אירוע עסקי">אירוע עסקי</option>
-                    <option value="אחר">אחר</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>אולם:</label>
-                  <select
-                    value={newEvent.place}
-                    onChange={(e) =>
-                      setNewEvent((prev) => ({
-                        ...prev,
-                        place: e.target.value,
-                      }))
-                    }
-                    required
-                  >
-                    <option value="">בחר</option>
-                    <option value="אולם ראשי">אולם ראשי</option>
-                    <option value="אולם משני">אולם משני</option>
-                    <option value="גן אירועים">גן אירועים</option>
-                    <option value="מסעדה">מסעדה</option>
-                    <option value="אחר">אחר</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>*שעה:</label>
-                  <input
-                    type="time"
-                    value={newEvent.time}
-                    onChange={(e) =>
-                      setNewEvent((prev) => ({ ...prev, time: e.target.value }))
-                    }
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>*מספר אורחים:</label>
-                  <input
-                    type="number"
-                    value={newEvent.numberOfGuests}
-                    onChange={(e) =>
-                      setNewEvent((prev) => ({
-                        ...prev,
-                        numberOfGuests: e.target.value,
-                      }))
-                    }
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>הגבלת כמות אורחים להושבה:</label>
-                  <input
-                    type="number"
-                    value={newEvent.seatingLimit}
-                    onChange={(e) =>
-                      setNewEvent((prev) => ({
-                        ...prev,
-                        seatingLimit: e.target.value,
-                      }))
-                    }
-                  />
-                </div>
-                <div className="form-group">
-                  <label>פרטים נוספים:</label>
-                  <textarea
-                    value={newEvent.description}
-                    onChange={(e) =>
-                      setNewEvent((prev) => ({
-                        ...prev,
-                        description: e.target.value,
-                      }))
-                    }
-                    rows="3"
-                  />
+                <h4 className="section-title">פרטי האירוע</h4>
+                <div className="form-grid">
+                  <div className="field-group half-width">
+                    <label className="field-label required">שם האירוע</label>
+                    <input
+                      type="text"
+                      value={newEvent.title}
+                      onChange={(e) =>
+                        setNewEvent((prev) => ({
+                          ...prev,
+                          title: e.target.value,
+                        }))
+                      }
+                      className="field-input"
+                      placeholder="למשל: חתונת יוסי ושרה"
+                      required
+                    />
+                  </div>
+                  <div className="field-group half-width">
+                    <label className="field-label required">סוג אירוע</label>
+                    <select
+                      value={newEvent.type}
+                      onChange={(e) =>
+                        setNewEvent((prev) => ({ ...prev, type: e.target.value }))
+                      }
+                      className="field-input"
+                      required
+                    >
+                      <option value="">בחר</option>
+                      <option value="חתונה">חתונה</option>
+                      <option value="בר מצווה">בר מצווה</option>
+                      <option value="ברית">ברית</option>
+                      <option value="יום הולדת">יום הולדת</option>
+                      <option value="אירוע עסקי">אירוע עסקי</option>
+                      <option value="אחר">אחר</option>
+                    </select>
+                  </div>
+                  
+                  <div className="field-group half-width">
+                    <label className="field-label required">אולם</label>
+                    <input
+                      type="text"
+                      value={newEvent.place}
+                      onChange={(e) =>
+                        setNewEvent((prev) => ({
+                          ...prev,
+                          place: e.target.value,
+                        }))
+                      }
+                      className="field-input"
+                      placeholder="הכנס שם האולם"
+                      required
+                    />
+                  </div>
+                  <div className="field-group half-width">
+                    <label className="field-label required">שעה</label>
+                    <input
+                      type="time"
+                      value={newEvent.time}
+                      onChange={(e) =>
+                        setNewEvent((prev) => ({ ...prev, time: e.target.value }))
+                      }
+                      className="field-input"
+                      required
+                    />
+                  </div>
+                  
+                  <div className="field-group half-width">
+                    <label className="field-label required">מספר אורחים</label>
+                    <input
+                      type="number"
+                      value={newEvent.numberOfGuests}
+                      onChange={(e) =>
+                        setNewEvent((prev) => ({
+                          ...prev,
+                          numberOfGuests: e.target.value,
+                        }))
+                      }
+                      className="field-input"
+                      placeholder="למשל: 150"
+                      min="1"
+                      required
+                    />
+                  </div>
+                  <div className="field-group half-width">
+                    <label className="field-label">הגבלת מקומות ישיבה</label>
+                    <input
+                      type="number"
+                      value={newEvent.seatingLimit}
+                      onChange={(e) =>
+                        setNewEvent((prev) => ({
+                          ...prev,
+                          seatingLimit: e.target.value,
+                        }))
+                      }
+                      className="field-input"
+                      placeholder="אופציונלי"
+                      min="0"
+                    />
+                  </div>
+                  
+                  <div className="field-group full-width">
+                    <label className="field-label">הערות ופרטים נוספים</label>
+                    <textarea
+                      value={newEvent.description}
+                      onChange={(e) =>
+                        setNewEvent((prev) => ({
+                          ...prev,
+                          description: e.target.value,
+                        }))
+                      }
+                      className="field-textarea"
+                      rows="3"
+                      placeholder="הוסף כל מידע נוסף הרלוונטי לאירוע..."
+                    />
+                  </div>
                 </div>
               </div>
 
-              <div className="form-buttons">
-                <button type="submit" className="btn-primary">
+              <div className="form-actions">
+                <button type="submit" className="btn btn-primary">
+                  <span>✓</span>
                   {editingEvent ? 'עדכן אירוע' : 'הוסף אירוע'}
                 </button>
                 <button
                   type="button"
-                  className="btn-secondary"
+                  className="btn btn-secondary"
                   onClick={() => {
                     setShowEventForm(false);
                     setEditingEvent(null);
@@ -667,6 +701,7 @@ function Calendar() {
                     });
                   }}
                 >
+                  <span>✕</span>
                   ביטול
                 </button>
               </div>

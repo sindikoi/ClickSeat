@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/seating.css';
+import Slider from '../components/Slider';
+import Sliderup from '../components/Sliderup';
 
 const Seating = () => {
   const navigate = useNavigate();
@@ -11,21 +13,21 @@ const Seating = () => {
       name: 'שולחן 1',
       capacity: 8,
       guests: [],
-      position: { x: 100, y: 100 },
+      position: { x: 600, y: 180 },
     },
     {
       id: 2,
       name: 'שולחן 2',
       capacity: 8,
       guests: [],
-      position: { x: 300, y: 100 },
+      position: { x: 1300, y: 150 },
     },
     {
       id: 3,
       name: 'שולחן 3',
       capacity: 6,
       guests: [],
-      position: { x: 500, y: 100 },
+      position: { x: 2000, y: 200 },
     },
   ]);
 
@@ -166,10 +168,12 @@ const Seating = () => {
   };
 
   return (
-    <div className="seating-page">
-      <h1>מערכת הושבה</h1>
+    <div className="wrapper">
+      <Sliderup />
+      <div className="seating-page">
+        <h1>מערכת הושבה</h1>
 
-      <div className="seating-container">
+        <div className="seating-container">
         {/* רשימת אורחים */}
         <div className="guests-panel">
           <h2>רשימת אורחים</h2>
@@ -232,13 +236,13 @@ const Seating = () => {
         {/* מפת האולם */}
         <div className="venue-map">
           <div className="map-header">
-            <h2>מפת האולם</h2>
             <button
               className="add-table-btn"
               onClick={() => setShowAddTable(true)}
             >
               + הוסף שולחן
             </button>
+            <h2>מפת האולם</h2>
           </div>
 
           {/* טופס הוספת/עריכת שולחן */}
@@ -472,7 +476,9 @@ const Seating = () => {
             <span className="stat-number">{tables.length}</span>
           </div>
         </div>
+        </div>
       </div>
+      <Slider />
     </div>
   );
 };
