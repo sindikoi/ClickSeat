@@ -259,23 +259,72 @@ select.field-input option {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+
+/* Desktop גדול */
+@media (max-width: 1440px) {
+  .new-event-container {
+    max-width: 85%;
+  }
+}
+
+/* Laptop */
+@media (max-width: 1200px) {
   .new-event-page {
-    padding: 20px 10px;
+    right: 200px;
   }
   
   .new-event-container {
-    padding: 25px;
-    margin: 10px;
+    max-width: 90%;
+    padding: 45px;
+  }
+  
+  .form-grid {
+    gap: 25px 35px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .new-event-page {
+    right: 0;
+    padding: 20px;
+  }
+  
+  .new-event-container {
+    max-width: 95%;
+    padding: 40px;
   }
   
   .page-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.6rem;
+  }
+}
+
+/* Tablet קטן */
+@media (max-width: 768px) {
+  .new-event-page {
+    padding: 15px;
+    top: 50px;
+  }
+  
+  .new-event-container {
+    padding: 30px 25px;
+    margin: 10px;
+    max-width: 98%;
+  }
+  
+  .page-title {
+    font-size: 2.2rem;
+    padding: 25px 20px;
   }
   
   .form-grid {
     grid-template-columns: 1fr;
-    gap: 15px;
+    gap: 20px;
   }
   
   .field-group.half-width {
@@ -283,39 +332,106 @@ select.field-input option {
   }
   
   .form-section {
-    padding: 20px;
-    margin-bottom: 25px;
+    padding: 25px 20px;
+    margin-bottom: 30px;
+  }
+  
+  .section-title {
+    font-size: 1.4rem;
+  }
+  
+  .field-input,
+  .field-textarea {
+    padding: 16px 18px;
+    font-size: 15px;
   }
   
   .form-actions {
     flex-direction: column;
     align-items: center;
+    gap: 20px;
   }
   
   .btn {
     width: 100%;
-    max-width: 300px;
+    max-width: 280px;
+    min-width: auto;
   }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
+  .new-event-page {
+    padding: 10px;
+    top: 40px;
+  }
+  
   .new-event-container {
-    padding: 20px;
+    padding: 25px 20px;
+    margin: 5px;
   }
   
   .page-title {
-    font-size: 1.8rem;
-    margin-bottom: 30px;
+    font-size: 1.9rem;
+    padding: 20px 15px;
+    margin-bottom: 25px;
   }
   
   .section-title {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    padding: 15px;
+  }
+  
+  .form-section {
+    padding: 20px 15px;
+    margin-bottom: 25px;
+  }
+  
+  .form-grid {
+    gap: 18px;
+  }
+  
+  .field-input,
+  .field-textarea {
+    padding: 14px 16px;
+    font-size: 14px;
+  }
+  
+  .field-label {
+    font-size: 14px;
+  }
+  
+  .btn {
+    padding: 12px 24px;
+    font-size: 14px;
+    max-width: 250px;
+  }
+}
+
+/* Mobile קטן מאוד */
+@media (max-width: 360px) {
+  .new-event-container {
+    padding: 20px 15px;
+  }
+  
+  .page-title {
+    font-size: 1.7rem;
+    padding: 15px 10px;
+  }
+  
+  .section-title {
+    font-size: 1.1rem;
   }
   
   .field-input,
   .field-textarea {
     padding: 12px 14px;
-    font-size: 14px;
+    font-size: 13px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 13px;
   }
 }
 

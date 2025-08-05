@@ -467,17 +467,83 @@
 }
 
 /* רספונסיביות */
+
+/* Desktop גדול */
+@media (max-width: 1440px) {
+  .seating-container {
+    max-width: 95%;
+  }
+  
+  .table {
+    width: 160px;
+    height: 160px;
+    font-size: 15px;
+  }
+  
+  .stat-card h3 {
+    font-size: 17px;
+  }
+}
+
+/* Laptop */
+@media (max-width: 1200px) {
+  .seating-page {
+    right: 200px;
+  }
+  
+  .seating-container {
+    max-width: 98%;
+    padding: 25px;
+  }
+  
+  .table {
+    width: 140px;
+    height: 140px;
+    font-size: 14px;
+  }
+  
+  .guests-panel {
+    padding: 25px;
+  }
+  
+  .stat-card h3 {
+    font-size: 16px;
+  }
+  
+  .stat-number {
+    font-size: 2.5rem;
+  }
+}
+
+/* Tablet */
 @media (max-width: 1024px) {
+  .seating-page {
+    right: 0;
+    padding: 20px;
+  }
+  
   .seating-container {
     grid-template-columns: 1fr;
+    gap: 25px;
   }
 
   .guests-panel {
     order: 2;
+    padding: 20px;
   }
 
   .venue-map {
     order: 1;
+  }
+  
+  .table {
+    width: 120px;
+    height: 120px;
+    font-size: 13px;
+  }
+  
+  .map-container {
+    padding: 30px;
   }
 }
 

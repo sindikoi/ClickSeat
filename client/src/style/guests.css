@@ -847,40 +847,98 @@ body {
 }
 
 /* רספונסיביות */
+
+/* Desktop גדול */
+@media (max-width: 1440px) {
+  .guests-container {
+    max-width: 85%;
+  }
+  
+  .guests-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+}
+
+/* Laptop */
+@media (max-width: 1200px) {
+  .guests-page {
+    right: 200px;
+  }
+  
+  .guests-container {
+    max-width: 90%;
+    padding: 40px;
+  }
+  
+  .guests-grid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .guests-page {
+    right: 0;
+    padding: 20px;
+  }
+  
+  .guests-container {
+    max-width: 95%;
+    padding: 35px;
+  }
+  
+  .page-header h1 {
+    font-size: 2.5rem;
+  }
+  
+  .guests-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+/* Tablet קטן */
 @media (max-width: 768px) {
   .guests-page {
     padding: 15px;
+    top: 50px;
+  }
+  
+  .guests-container {
+    padding: 30px 25px;
+    max-width: 98%;
   }
 
-  .guests-page h1 {
-    font-size: 2rem;
+  .page-header h1 {
+    font-size: 2.2rem;
     margin-bottom: 25px;
   }
 
-  .guests-page h2 {
-    font-size: 1.3rem;
+  .page-header h2 {
+    font-size: 1.4rem;
   }
 
+  .form-grid,
   .form-row {
     grid-template-columns: 1fr;
-    gap: 15px;
+    gap: 20px;
   }
 
-  .add-guest-form {
-    padding: 25px;
+  .add-guest-form,
+  .guest-form {
+    padding: 25px 20px;
   }
 
-  .add-guest-form input,
-  .add-guest-form select,
-  .add-guest-form textarea {
-    padding: 15px;
-    font-size: 16px;
+  .field-input,
+  .field-textarea {
+    padding: 16px 18px;
+    font-size: 15px;
   }
 
-  .add-guest-form button {
+  .btn {
     width: 100%;
-    padding: 18px;
-    font-size: 16px;
+    max-width: 280px;
+    padding: 14px 28px;
   }
 
   .guests-grid {

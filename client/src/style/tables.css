@@ -331,15 +331,124 @@
 }
 
 /* רספונסיביות */
+
+/* Desktop גדול */
+@media (max-width: 1440px) {
+  .tableFirst {
+    font-size: 15px;
+  }
+  
+  .title {
+    font-size: 2.3rem;
+  }
+  
+  .addRow {
+    padding: 16px 32px;
+    font-size: 15px;
+  }
+}
+
+/* Laptop */
+@media (max-width: 1200px) {
+  .tableFirst th,
+  .tableFirst td {
+    padding: 18px 16px;
+    font-size: 15px;
+  }
+  
+  .title {
+    font-size: 2.1rem;
+  }
+  
+  .addRow {
+    padding: 15px 28px;
+    font-size: 14px;
+  }
+  
+  .status-btn-new {
+    padding: 9px 14px;
+    font-size: 13px;
+    min-width: 110px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .homepage-container {
+    max-width: 95%;
+    padding: 35px;
+  }
+  
+  .tableFirst {
+    font-size: 14px;
+  }
+  
+  .tableFirst th,
+  .tableFirst td {
+    padding: 16px 14px;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .addRow {
+    padding: 14px 24px;
+    font-size: 13px;
+  }
+}
+
+/* Tablet קטן */
 @media (max-width: 768px) {
+  .homepage-page {
+    top: 50px;
+    right: 0;
+    padding: 15px;
+  }
+  
+  .homepage-container {
+    padding: 30px 25px;
+    max-width: 98%;
+  }
+  
+  .tableFirst {
+    overflow-x: auto;
+    display: block;
+    white-space: nowrap;
+  }
+  
+  .tableFirst th,
+  .tableFirst td {
+    padding: 14px 12px;
+    font-size: 13px;
+    min-width: 80px;
+  }
+  
+  .title {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+  }
+  
+  .addRow {
+    padding: 12px 20px;
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+  
+  .status-btn-new {
+    padding: 8px 12px;
+    font-size: 12px;
+    min-width: 100px;
+  }
+
   .action-buttons {
     flex-direction: column;
-    gap: 3px;
+    gap: 5px;
   }
 
   .action-btn {
     font-size: 11px;
-    padding: 4px 8px;
+    padding: 6px 10px;
   }
 
   .dropdown-menu {
@@ -352,19 +461,82 @@
   }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
+  .homepage-page {
+    padding: 10px;
+    top: 40px;
+  }
+  
+  .homepage-container {
+    padding: 25px 20px;
+  }
+  
   .tableFirst th,
   .tableFirst td {
     padding: 10px 8px;
     font-size: 12px;
+    min-width: 70px;
+  }
+  
+  .title {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+  
+  .addRow {
+    padding: 10px 16px;
+    font-size: 11px;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .status-btn-new {
+    padding: 6px 10px;
+    font-size: 10px;
+    min-width: 80px;
   }
 
   .action-btn {
     font-size: 10px;
-    padding: 3px 6px;
+    padding: 4px 8px;
   }
 
   .dropdown-menu {
     min-width: 120px;
+  }
+  
+  .dropdown-item {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}
+
+/* Mobile קטן מאוד */
+@media (max-width: 360px) {
+  .homepage-container {
+    padding: 20px 15px;
+  }
+  
+  .tableFirst th,
+  .tableFirst td {
+    padding: 8px 6px;
+    font-size: 11px;
+    min-width: 60px;
+  }
+  
+  .title {
+    font-size: 1.4rem;
+  }
+  
+  .addRow {
+    padding: 8px 14px;
+    font-size: 10px;
+  }
+  
+  .status-btn-new {
+    padding: 5px 8px;
+    font-size: 9px;
+    min-width: 70px;
   }
 }

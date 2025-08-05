@@ -78,6 +78,57 @@
 }
 
 /* רספונסיביות */
+
+/* Desktop גדול */
+@media (max-width: 1440px) {
+  .nav-logo a {
+    font-size: 1.6rem;
+  }
+  
+  .nav-links a {
+    padding: 18px 14px;
+    font-size: 15px;
+  }
+}
+
+/* Laptop */
+@media (max-width: 1200px) {
+  .nav-container {
+    padding: 18px 25px;
+  }
+  
+  .nav-logo a {
+    font-size: 1.5rem;
+  }
+  
+  .nav-links a {
+    padding: 16px 12px;
+    font-size: 14px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .nav-container {
+    padding: 16px 22px;
+  }
+  
+  .nav-logo a {
+    font-size: 1.45rem;
+  }
+  
+  .nav-links {
+    gap: 12px;
+  }
+  
+  .nav-links a {
+    padding: 14px 11px;
+    font-size: 13px;
+    min-width: 90px;
+  }
+}
+
+/* Tablet קטן */
 @media (max-width: 768px) {
   .nav-container {
     flex-direction: column;
@@ -85,11 +136,17 @@
     padding: 15px 20px;
   }
 
+  .nav-logo {
+    position: static;
+    transform: none;
+  }
+
   .nav-logo a {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .nav-links {
+    position: static;
     margin-top: 15px;
     gap: 10px;
     flex-wrap: wrap;
@@ -97,13 +154,14 @@
   }
 
   .nav-links a {
-    padding: 10px 15px;
-    
+    padding: 12px 15px;
+    font-size: 12px;
     min-width: 100px;
     text-align: center;
   }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
   .nav-container {
     padding: 12px 15px;
@@ -115,11 +173,34 @@
 
   .nav-links {
     gap: 8px;
+    margin-top: 12px;
   }
 
   .nav-links a {
-    padding: 8px 12px;
-    
+    padding: 10px 12px;
+    font-size: 11px;
     min-width: 80px;
+  }
+}
+
+/* Mobile קטן מאוד */
+@media (max-width: 360px) {
+  .nav-container {
+    padding: 10px 12px;
+  }
+  
+  .nav-logo a {
+    font-size: 1.2rem;
+  }
+  
+  .nav-links {
+    gap: 6px;
+    margin-top: 10px;
+  }
+  
+  .nav-links a {
+    padding: 8px 10px;
+    font-size: 10px;
+    min-width: 70px;
   }
 }
